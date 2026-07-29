@@ -1,0 +1,36 @@
+/*
+ * Utilidades responsive transversales, complementarias a los breakpoints ya
+ * definidos dentro de cada archivo del Design System (layout.css,
+ * tables.css, forms.css). Breakpoints oficiales del sistema:
+ *   Desktop       > 1200px
+ *   Notebook      992px - 1200px
+ *   Tablet horiz. 768px - 992px
+ *   Tablet vert.  576px - 768px
+ *   Celular       < 576px
+ */
+
+.hide-mobile {
+    display: initial;
+}
+
+.show-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+    .show-mobile {
+        display: initial !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+    .dashboard-module-grid {
+        grid-template-columns: 1fr;
+    }
+}

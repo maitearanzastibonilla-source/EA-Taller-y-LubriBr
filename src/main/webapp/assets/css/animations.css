@@ -1,0 +1,54 @@
+/*
+ * Animaciones unicas del sistema. Toda transicion visible (fade, slide,
+ * loading) debe reutilizar estas clases y las duraciones definidas en
+ * variables.css, para mantener consistencia entre modulos.
+ */
+
+.fade-in {
+    animation: fade-in var(--duration-slow) var(--ease-standard);
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slide-in-up {
+    animation: slide-in-up var(--duration-slow) var(--ease-standard);
+}
+
+@keyframes slide-in-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--color-black-100);
+    border-top-color: var(--color-primary);
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 950;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}

@@ -1,0 +1,271 @@
+/*
+ * Componentes generales del Design System: cards, alertas/toasts, modales,
+ * tooltips, dropdowns, filtros y skeleton loading.
+ */
+
+/* ------------------------------- Cards -------------------------------- */
+
+.card {
+    background: var(--color-bg-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-low);
+}
+
+.card__title {
+    font-size: var(--font-size-card-title);
+    font-weight: var(--font-weight-semibold);
+    margin: 0 0 var(--space-1);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.card__value {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+/* ------------------------------- Alertas -------------------------------- */
+
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-secondary);
+    border: var(--border-width) solid transparent;
+    margin-bottom: var(--space-5);
+}
+
+.alert svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.alert--error {
+    background: var(--color-danger-soft);
+    border-color: var(--color-red-200);
+    color: var(--color-red-700);
+}
+
+.alert--success {
+    background: var(--color-success-soft);
+    border-color: var(--color-blue-200);
+    color: var(--color-blue-700);
+}
+
+.alert--warning {
+    background: var(--color-black-50);
+    border-color: var(--color-black-200);
+    color: var(--color-black-700);
+}
+
+/* ------------------------------- Toasts -------------------------------- */
+
+.toast-container {
+    position: fixed;
+    top: var(--space-5);
+    right: var(--space-5);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.toast {
+    min-width: 280px;
+    max-width: 360px;
+    background: var(--color-black-800);
+    color: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    box-shadow: var(--shadow-high);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    animation: toast-in var(--duration-slow) var(--ease-standard);
+}
+
+.toast--success { border-left: 3px solid var(--color-blue-400); }
+.toast--error { border-left: 3px solid var(--color-red-400); }
+
+.toast.is-leaving {
+    animation: toast-out var(--duration-base) var(--ease-standard) forwards;
+}
+
+@keyframes toast-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toast-out {
+    to { opacity: 0; transform: translateY(-8px); }
+}
+
+/* ------------------------------- Modales -------------------------------- */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 11, 15, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+.modal-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-high);
+    width: 100%;
+    max-width: 420px;
+    padding: var(--space-6);
+    transform: translateY(12px) scale(0.98);
+    transition: transform var(--duration-base) var(--ease-standard);
+}
+
+.modal-backdrop.is-open .modal {
+    transform: translateY(0) scale(1);
+}
+
+.modal__title {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
+    margin: 0 0 var(--space-2);
+}
+
+.modal__body {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-secondary);
+    margin-bottom: var(--space-6);
+}
+
+.modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+}
+
+/* ------------------------------- Tooltips -------------------------------- */
+
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-black-800);
+    color: var(--color-white);
+    font-size: var(--font-size-tooltip);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    z-index: 500;
+}
+
+/* ------------------------------- Filtros -------------------------------- */
+
+.filters-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    border-bottom: var(--border-width) solid var(--color-border);
+    flex-wrap: wrap;
+}
+
+.filters-bar .form-control {
+    height: 38px;
+}
+
+.filters-bar__spacer {
+    flex: 1;
+}
+
+/* ------------------------------- Skeleton -------------------------------- */
+
+.skeleton {
+    background: linear-gradient(90deg, var(--color-black-100) 25%, var(--color-black-50) 37%, var(--color-black-100) 63%);
+    background-size: 400% 100%;
+    animation: skeleton-loading 1.4s ease infinite;
+    border-radius: var(--radius-sm);
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+}
+
+/* ------------------------------- Dropdowns -------------------------------- */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown__menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    background: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-medium);
+    min-width: 180px;
+    padding: var(--space-2);
+    z-index: 300;
+    display: none;
+}
+
+.dropdown__menu.is-open {
+    display: block;
+}
+
+.dropdown__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    border: none;
+    background: none;
+    font-size: var(--font-size-secondary);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdown__item:hover {
+    background: var(--color-black-50);
+}
+
+.dropdown__item--danger {
+    color: var(--color-danger);
+}

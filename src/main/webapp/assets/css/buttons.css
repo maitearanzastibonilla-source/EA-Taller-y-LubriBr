@@ -1,0 +1,133 @@
+/*
+ * Botones del Design System. Un unico conjunto de estilos reutilizado por
+ * todos los modulos: primario, secundario, peligro, exito, deshabilitado.
+ */
+
+.btn {
+    --btn-bg: var(--color-black-700);
+    --btn-bg-hover: var(--color-black-800);
+    --btn-fg: var(--color-white);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    height: 40px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-sm);
+    border: var(--border-width) solid transparent;
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    font-family: inherit;
+    font-size: var(--font-size-button);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background var(--duration-fast) var(--ease-standard),
+                border-color var(--duration-fast) var(--ease-standard),
+                box-shadow var(--duration-fast) var(--ease-standard),
+                transform var(--duration-fast) var(--ease-standard);
+}
+
+.btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn:hover {
+    background: var(--btn-bg-hover);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-blue-100);
+}
+
+.btn:disabled,
+.btn.is-disabled {
+    background: var(--color-black-100);
+    color: var(--color-black-300);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn--sm {
+    height: 32px;
+    padding: 0 var(--space-3);
+    font-size: var(--font-size-secondary);
+}
+
+.btn--icon {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+}
+
+.btn--icon.btn--sm {
+    width: 32px;
+    height: 32px;
+}
+
+.btn--primary {
+    --btn-bg: var(--color-primary);
+    --btn-bg-hover: var(--color-primary-hover);
+}
+
+.btn--secondary {
+    --btn-bg: var(--color-white);
+    --btn-bg-hover: var(--color-black-50);
+    --btn-fg: var(--color-text-primary);
+    border-color: var(--color-border-strong);
+}
+
+.btn--danger {
+    --btn-bg: var(--color-danger);
+    --btn-bg-hover: var(--color-danger-hover);
+}
+
+.btn--ghost {
+    --btn-bg: transparent;
+    --btn-bg-hover: var(--color-black-50);
+    --btn-fg: var(--color-text-secondary);
+}
+
+.btn--ghost:hover {
+    color: var(--color-text-primary);
+}
+
+.btn--block {
+    width: 100%;
+}
+
+.btn--loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.btn--loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: var(--color-white);
+    animation: btn-spin 0.6s linear infinite;
+}
+
+.btn--secondary.btn--loading::after,
+.btn--ghost.btn--loading::after {
+    border-color: rgba(10, 11, 15, 0.15);
+    border-top-color: var(--color-black-700);
+}
+
+@keyframes btn-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

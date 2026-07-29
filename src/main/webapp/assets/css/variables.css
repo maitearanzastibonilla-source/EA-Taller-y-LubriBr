@@ -1,0 +1,135 @@
+/*
+ * Design System - EA Taller y LubriBr
+ * Tokens visuales unicos del sistema: tipografia, paleta, espaciados,
+ * bordes, sombras y animaciones. Todo componente del sistema debe
+ * consumir estas variables; ningun modulo debe definir valores propios.
+ */
+
+:root {
+    /* ------------------------------------------------------------- */
+    /* Tipografia                                                     */
+    /* ------------------------------------------------------------- */
+    --font-family-base: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+    --font-size-h1: 1.75rem;
+    --font-size-h2: 1.375rem;
+    --font-size-h3: 1.125rem;
+    --font-size-card-title: 0.9375rem;
+    --font-size-table-title: 0.8125rem;
+    --font-size-body: 0.9375rem;
+    --font-size-secondary: 0.8125rem;
+    --font-size-tooltip: 0.75rem;
+    --font-size-badge: 0.6875rem;
+    --font-size-label: 0.8125rem;
+    --font-size-button: 0.875rem;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-base: 1.5;
+
+    /* ------------------------------------------------------------- */
+    /* Paleta (unicamente negro / azul / rojo / blanco)               */
+    /* ------------------------------------------------------------- */
+    --color-black-50:  #f4f5f6;
+    --color-black-100: #e6e8ea;
+    --color-black-200: #c9ccd1;
+    --color-black-300: #9a9fa8;
+    --color-black-400: #6b707a;
+    --color-black-500: #454a54;
+    --color-black-600: #2e323b;
+    --color-black-700: #1c1f26;
+    --color-black-800: #12141a;
+    --color-black-900: #0a0b0f;
+
+    --color-blue-50:  #eaf1fb;
+    --color-blue-100: #cfe0f5;
+    --color-blue-200: #a3c2ea;
+    --color-blue-300: #729fdd;
+    --color-blue-400: #4a7fd0;
+    --color-blue-500: #2b62bd;
+    --color-blue-600: #1f4c9e;
+    --color-blue-700: #163a7c;
+    --color-blue-800: #102a5c;
+    --color-blue-900: #0a1b3d;
+
+    --color-red-50:  #fdecec;
+    --color-red-100: #f8caca;
+    --color-red-200: #f0a0a0;
+    --color-red-300: #e57474;
+    --color-red-400: #d94f4f;
+    --color-red-500: #c62e2e;
+    --color-red-600: #a52222;
+    --color-red-700: #841a1a;
+    --color-red-800: #631313;
+    --color-red-900: #420c0c;
+
+    --color-white: #ffffff;
+
+    /* Roles semanticos */
+    --color-bg-app: var(--color-black-50);
+    --color-bg-surface: var(--color-white);
+    --color-bg-sidebar: var(--color-black-800);
+    --color-bg-header: var(--color-white);
+    --color-text-primary: var(--color-black-800);
+    --color-text-secondary: var(--color-black-400);
+    --color-text-inverse: var(--color-white);
+    --color-border: var(--color-black-100);
+    --color-border-strong: var(--color-black-200);
+
+    --color-primary: var(--color-blue-600);
+    --color-primary-hover: var(--color-blue-700);
+    --color-primary-soft: var(--color-blue-50);
+
+    --color-danger: var(--color-red-600);
+    --color-danger-hover: var(--color-red-700);
+    --color-danger-soft: var(--color-red-50);
+
+    --color-success: var(--color-blue-600);
+    --color-success-soft: var(--color-blue-50);
+
+    /* ------------------------------------------------------------- */
+    /* Espaciados                                                     */
+    /* ------------------------------------------------------------- */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+
+    /* ------------------------------------------------------------- */
+    /* Bordes                                                         */
+    /* ------------------------------------------------------------- */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --border-width: 1px;
+
+    /* ------------------------------------------------------------- */
+    /* Sombras                                                        */
+    /* ------------------------------------------------------------- */
+    --shadow-low: 0 1px 2px rgba(10, 11, 15, 0.06), 0 1px 1px rgba(10, 11, 15, 0.04);
+    --shadow-medium: 0 4px 10px rgba(10, 11, 15, 0.08), 0 2px 4px rgba(10, 11, 15, 0.05);
+    --shadow-high: 0 12px 28px rgba(10, 11, 15, 0.14), 0 4px 8px rgba(10, 11, 15, 0.08);
+
+    /* ------------------------------------------------------------- */
+    /* Animaciones                                                    */
+    /* ------------------------------------------------------------- */
+    --duration-fast: 120ms;
+    --duration-base: 200ms;
+    --duration-slow: 320ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Layout */
+    --sidebar-width: 248px;
+    --sidebar-width-collapsed: 72px;
+    --header-height: 64px;
+}

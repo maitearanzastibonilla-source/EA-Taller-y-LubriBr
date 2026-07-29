@@ -1,0 +1,205 @@
+/*
+ * Tablas del Design System. Las tablas son el componente principal del
+ * sistema: encabezados propios, hover, badges de estado, paginacion.
+ */
+
+.data-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-body);
+}
+
+.data-table thead th {
+    text-align: left;
+    font-size: var(--font-size-table-title);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 2px solid var(--color-border);
+    white-space: nowrap;
+}
+
+.data-table thead th.is-sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.data-table thead th.is-sortable:hover {
+    color: var(--color-text-primary);
+}
+
+.data-table tbody td {
+    padding: var(--space-4);
+    border-bottom: var(--border-width) solid var(--color-border);
+    color: var(--color-text-primary);
+    vertical-align: middle;
+}
+
+.data-table tbody tr {
+    transition: background var(--duration-fast) var(--ease-standard);
+}
+
+.data-table tbody tr:hover {
+    background: var(--color-black-50);
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table td.col-actions {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.data-table .cell-primary {
+    font-weight: var(--font-weight-semibold);
+}
+
+.data-table .cell-secondary {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-secondary);
+}
+
+.row-actions {
+    display: inline-flex;
+    gap: var(--space-1);
+    justify-content: flex-end;
+}
+
+/* --------------------------- Badges de estado ------------------------ */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 2px var(--space-2);
+    border-radius: 999px;
+    font-size: var(--font-size-badge);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.badge--activo {
+    background: var(--color-blue-50);
+    color: var(--color-blue-700);
+}
+
+.badge--inactivo {
+    background: var(--color-black-100);
+    color: var(--color-black-500);
+}
+
+.badge--bloqueado {
+    background: var(--color-red-50);
+    color: var(--color-red-700);
+}
+
+.badge--admin {
+    background: var(--color-black-800);
+    color: var(--color-white);
+}
+
+.badge--operador {
+    background: var(--color-black-100);
+    color: var(--color-black-700);
+}
+
+/* ----------------------------- Paginacion ----------------------------- */
+
+.pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4);
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.pagination-bar__info {
+    font-size: var(--font-size-secondary);
+    color: var(--color-text-secondary);
+}
+
+.pagination-bar__controls {
+    display: flex;
+    gap: var(--space-2);
+}
+
+/* ------------------------------ Vacio / carga -------------------------- */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-16) var(--space-6);
+    color: var(--color-text-secondary);
+}
+
+.empty-state svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: var(--space-4);
+    color: var(--color-black-200);
+}
+
+.empty-state h3 {
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-1);
+    font-size: var(--font-size-h3);
+}
+
+.empty-state p {
+    margin: 0 0 var(--space-4);
+    max-width: 320px;
+}
+
+@media (max-width: 768px) {
+    .data-table thead {
+        display: none;
+    }
+    .data-table, .data-table tbody, .data-table tr, .data-table td {
+        display: block;
+        width: 100%;
+    }
+    .data-table tbody tr {
+        border: var(--border-width) solid var(--color-border);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-3);
+        padding: var(--space-2) 0;
+    }
+    .data-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--space-3);
+        border-bottom: none;
+        padding: var(--space-2) var(--space-4);
+    }
+    .data-table tbody td::before {
+        content: attr(data-label);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-secondary);
+    }
+    .data-table td.col-actions {
+        justify-content: flex-start;
+    }
+}

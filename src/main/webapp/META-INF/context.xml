@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Configuracion de contexto de Apache Tomcat para el SGI EA Taller y LubriBr.
+    Define el DataSource JNDI (jdbc/eaTallerDB) con pool de conexiones nativo
+    de Tomcat, reutilizado por toda la aplicacion a traves de
+    com.eataller.config.DBConnectionManager.
+
+    Ajustar usuario, password y url segun el entorno de despliegue antes de
+    copiar este archivo a $CATALINA_BASE/conf/Catalina/localhost/, o dejarlo
+    aqui para que Tomcat lo tome automaticamente al desplegar el WAR.
+-->
+<Context>
+    <Resource name="jdbc/eaTallerDB"
+              auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/ea_taller_lubribr?useSSL=false&amp;serverTimezone=America/Argentina/Buenos_Aires&amp;characterEncoding=UTF-8"
+              username="ea_taller_app"
+              password="CAMBIAR_PASSWORD"
+              maxTotal="20"
+              maxIdle="10"
+              minIdle="2"
+              maxWaitMillis="10000"
+              validationQuery="SELECT 1"
+              testOnBorrow="true"
+              removeAbandonedOnBorrow="true"
+              removeAbandonedTimeout="60"/>
+</Context>

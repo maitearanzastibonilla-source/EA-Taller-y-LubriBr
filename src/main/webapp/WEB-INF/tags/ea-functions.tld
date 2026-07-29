@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_0.xsd"
+        version="3.0">
+    <description>Funciones EL reutilizables del SGI EA Taller y LubriBr.</description>
+    <tlib-version>1.0</tlib-version>
+    <short-name>ea</short-name>
+    <uri>https://eataller.com/tags/functions</uri>
+
+    <function>
+        <name>fechaHora</name>
+        <function-class>com.eataller.utils.JspFunctions</function-class>
+        <function-signature>java.lang.String fechaHora(java.time.LocalDateTime)</function-signature>
+    </function>
+
+    <function>
+        <name>fecha</name>
+        <function-class>com.eataller.utils.JspFunctions</function-class>
+        <function-signature>java.lang.String fecha(java.time.LocalDateTime)</function-signature>
+    </function>
+</taglib>
