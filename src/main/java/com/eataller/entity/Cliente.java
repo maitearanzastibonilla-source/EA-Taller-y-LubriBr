@@ -12,7 +12,7 @@ public class Cliente {
     private String email;
     private String telefono;
     private String direccion;
-    private EstadoCliente estado;
+    private Estado estado;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -75,11 +75,11 @@ public class Cliente {
         this.direccion = direccion;
     }
 
-    public EstadoCliente getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoCliente estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 

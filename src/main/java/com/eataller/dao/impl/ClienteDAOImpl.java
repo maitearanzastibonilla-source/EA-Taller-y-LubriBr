@@ -4,7 +4,7 @@ import com.eataller.config.DBConnectionManager;
 import com.eataller.dao.ClienteDAO;
 import com.eataller.dto.PaginaResultado;
 import com.eataller.entity.Cliente;
-import com.eataller.entity.EstadoCliente;
+import com.eataller.entity.Estado;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -190,7 +190,7 @@ public class ClienteDAOImpl implements ClienteDAO {
         cliente.setEmail(rs.getString("email"));
         cliente.setTelefono(rs.getString("telefono"));
         cliente.setDireccion(rs.getString("direccion"));
-        cliente.setEstado(EstadoCliente.desdeValorBD(rs.getString("estado")));
+        cliente.setEstado(Estado.desdeValorBD(rs.getString("estado")));
 
         Timestamp createdAt = rs.getTimestamp("created_at");
         cliente.setCreatedAt(createdAt == null ? null : createdAt.toLocalDateTime());

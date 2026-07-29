@@ -93,3 +93,34 @@ CREATE INDEX idx_clientes_estado ON clientes (estado);
 -- activos, turnos pendientes o saldo en cuenta corriente" se activa cuando
 -- se incorporen esos modulos (las FK correspondientes se agregaran con
 -- ON DELETE RESTRICT y la validacion de negocio en ClienteServiceImpl).
+
+-- -------------------------------------------------------------
+-- Tabla: vehiculos
+-- Objetivo: vehiculos asociados a cada cliente (Modulo de Vehiculos).
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS vehiculos (
+    id_vehiculo  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    cliente_id   BIGINT UNSIGNED NOT NULL,
+    patente      VARCHAR(10)  NOT NULL,
+    marca        VARCHAR(60)  NOT NULL,
+    modelo       VARCHAR(60)  NOT NULL,
+    anio         SMALLINT UNSIGNED NOT NULL,
+    estado       ENUM('ACTIVO', 'INACTIVO') NOT NULL DEFAULT 'ACTIVO',
+    created_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT uq_vehiculos_patente UNIQUE (patente),
+    CONSTRAINT fk_vehiculos_cliente FOREIGN KEY (cliente_id)
+        REFERENCES clientes (id_cliente)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+    CONSTRAINT ck_vehiculos_anio CHECK (anio >= 1950)
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_vehiculos_cliente ON vehiculos (cliente_id);
+CREATE INDEX idx_vehiculos_marca_modelo ON vehiculos (marca, modelo);
+CREATE INDEX idx_vehiculos_estado ON vehiculos (estado);
+
+-- Nota: "no se puede dar de baja un vehiculo con turnos activos o trabajos
+-- pendientes" se activa cuando existan esas tablas (Turnos, Trabajos
+-- Realizados).

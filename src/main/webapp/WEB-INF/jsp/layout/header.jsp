@@ -45,6 +45,13 @@
                 </span>
                 <span class="sidebar__link-text">Clientes</span>
             </a>
+            <a class="sidebar__link ${activeMenu == 'vehiculos' ? 'is-active' : ''}"
+               href="${pageContext.request.contextPath}/vehiculos">
+                <span class="sidebar__link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M6 17V9l2-4h8l2 4v8M9 17v-4h6v4"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg>
+                </span>
+                <span class="sidebar__link-text">Vehiculos</span>
+            </a>
 
             <c:if test="${sessionScope.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}">
                 <span class="sidebar__section-label">Administracion</span>

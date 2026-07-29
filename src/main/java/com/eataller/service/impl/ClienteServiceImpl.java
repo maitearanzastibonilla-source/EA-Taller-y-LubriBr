@@ -11,7 +11,7 @@ import com.eataller.dto.ClienteFormDTO;
 import com.eataller.dto.PaginaResultado;
 import com.eataller.entity.Auditoria;
 import com.eataller.entity.Cliente;
-import com.eataller.entity.EstadoCliente;
+import com.eataller.entity.Estado;
 import com.eataller.entity.RolUsuario;
 import com.eataller.exception.ClienteNoEncontradoException;
 import com.eataller.exception.DatoDuplicadoException;
@@ -61,7 +61,7 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setEmail(vacioComoNulo(form.getEmail()));
         cliente.setTelefono(telefono);
         cliente.setDireccion(vacioComoNulo(form.getDireccion()));
-        cliente.setEstado(EstadoCliente.ACTIVO);
+        cliente.setEstado(Estado.ACTIVO);
 
         try (Connection connection = DBConnectionManager.getConnection()) {
             connection.setAutoCommit(false);

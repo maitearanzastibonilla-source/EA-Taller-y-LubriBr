@@ -39,4 +39,5 @@ public final class AppConstants {
     public static final String MODULO_USUARIOS = "USUARIOS";
     public static final String MODULO_AUTENTICACION = "AUTENTICACION";
     public static final String MODULO_CLIENTES = "CLIENTES";
+    public static final String MODULO_VEHICULOS = "VEHICULOS";
 }

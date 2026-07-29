@@ -32,13 +32,13 @@
         <p>Alta, busqueda y ficha de clientes del taller.</p>
     </a>
 
-    <div class="dashboard-module-card dashboard-module-card--disabled">
+    <a class="dashboard-module-card" href="${pageContext.request.contextPath}/vehiculos" style="text-decoration:none; color:inherit;">
         <div class="dashboard-module-card__icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M6 17V9l2-4h8l2 4v8M9 17v-4h6v4"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg>
         </div>
         <h3>Vehiculos</h3>
-        <p>Proximamente.</p>
-    </div>
+        <p>Patente, marca, modelo y propietario.</p>
+    </a>
 
     <div class="dashboard-module-card dashboard-module-card--disabled">
         <div class="dashboard-module-card__icon">

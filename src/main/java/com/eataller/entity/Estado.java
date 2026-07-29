@@ -1,13 +1,13 @@
 package com.eataller.entity;
 
-public enum EstadoCliente {
+public enum Estado {
 
     ACTIVO("Activo"),
     INACTIVO("Inactivo");
 
     private final String etiqueta;
 
-    EstadoCliente(String etiqueta) {
+    Estado(String etiqueta) {
         this.etiqueta = etiqueta;
     }
 
@@ -15,7 +15,7 @@ public enum EstadoCliente {
         return etiqueta;
     }
 
-    public static EstadoCliente desdeValorBD(String valor) {
-        return EstadoCliente.valueOf(valor.trim().toUpperCase());
+    public static Estado desdeValorBD(String valor) {
+        return Estado.valueOf(valor.trim().toUpperCase());
     }
 }

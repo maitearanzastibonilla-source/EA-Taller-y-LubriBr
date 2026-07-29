@@ -15,6 +15,7 @@ public final class ValidationUtils {
 
     private static final Pattern DNI_PATTERN = Pattern.compile("^\\d{7,8}$");
     private static final Pattern TELEFONO_PATTERN = Pattern.compile("^[0-9+()\\-\\s]{6,30}$");
+    private static final Pattern PATENTE_PATTERN = Pattern.compile("^[A-Z]{2,3}\\d{3}[A-Z]{0,2}$");
 
     public static final int PASSWORD_LONGITUD_MINIMA = 8;
 
@@ -31,6 +32,10 @@ public final class ValidationUtils {
 
     public static boolean esTelefonoValido(String telefono) {
         return telefono != null && TELEFONO_PATTERN.matcher(telefono.trim()).matches();
+    }
+
+    public static boolean esPatenteValida(String patente) {
+        return patente != null && PATENTE_PATTERN.matcher(patente.trim().toUpperCase()).matches();
     }
 
     public static boolean esVacio(String valor) {

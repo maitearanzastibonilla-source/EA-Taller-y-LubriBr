@@ -92,6 +92,12 @@
                                        href="${pageContext.request.contextPath}/clientes?accion=editar&id=${cli.idCliente}">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                                     </a>
+                                    <c:if test="${cli.estado.name() == 'ACTIVO'}">
+                                        <a class="btn btn--icon btn--ghost btn--sm" data-tooltip="Agregar vehiculo"
+                                           href="${pageContext.request.contextPath}/vehiculos?accion=nuevo&clienteId=${cli.idCliente}">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M6 17V9l2-4h8l2 4v8M9 17v-4h6v4"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg>
+                                        </a>
+                                    </c:if>
                                     <c:if test="${sessionScope.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}">
                                         <form method="post" action="${pageContext.request.contextPath}/clientes"
                                               data-confirm="${cli.estado.name() == 'ACTIVO' ? '¿Desactivar' : '¿Activar'} a ${cli.nombreCompleto}?">

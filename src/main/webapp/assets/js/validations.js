@@ -106,6 +106,32 @@
         return true;
     }
 
+    function validarPatente(campo) {
+        if (!validarCampoRequerido(campo, "La patente es obligatoria.")) {
+            return false;
+        }
+        if (!/^[A-Za-z]{2,3}\d{3}[A-Za-z]{0,2}$/.test(campo.value.trim())) {
+            marcarError(campo, "Formato invalido (Ej: AB123CD o ABC123).");
+            return false;
+        }
+        limpiarError(campo);
+        return true;
+    }
+
+    function validarAnio(campo) {
+        if (!validarCampoRequerido(campo, "El anio es obligatorio.")) {
+            return false;
+        }
+        var anio = parseInt(campo.value, 10);
+        var anioMaximo = new Date().getFullYear() + 1;
+        if (isNaN(anio) || anio < 1950 || anio > anioMaximo) {
+            marcarError(campo, "Debe estar entre 1950 y " + anioMaximo + ".");
+            return false;
+        }
+        limpiarError(campo);
+        return true;
+    }
+
     function inicializarFormularioLogin() {
         var form = document.querySelector("[data-form='login']");
         if (!form) {
@@ -175,9 +201,35 @@
         });
     }
 
+    function inicializarFormularioVehiculo() {
+        var form = document.querySelector("[data-form='vehiculo']");
+        if (!form) {
+            return;
+        }
+        var clienteId = form.querySelector("[name='clienteId']");
+        var patente = form.querySelector("[name='patente']");
+        var anio = form.querySelector("[name='anio']");
+        var marca = form.querySelector("[name='marca']");
+        var modelo = form.querySelector("[name='modelo']");
+
+        form.addEventListener("submit", function (event) {
+            var valido = true;
+            valido = validarCampoRequerido(clienteId, "Debe seleccionar un propietario.") && valido;
+            valido = validarPatente(patente) && valido;
+            valido = validarAnio(anio) && valido;
+            valido = validarCampoRequerido(marca, "La marca es obligatoria.") && valido;
+            valido = validarCampoRequerido(modelo, "El modelo es obligatorio.") && valido;
+
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         inicializarFormularioLogin();
         inicializarFormularioUsuario();
         inicializarFormularioCliente();
+        inicializarFormularioVehiculo();
     });
 })();
