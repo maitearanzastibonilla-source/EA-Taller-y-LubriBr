@@ -65,3 +65,31 @@ CREATE TABLE IF NOT EXISTS auditoria (
 CREATE INDEX idx_auditoria_usuario ON auditoria (usuario_id);
 CREATE INDEX idx_auditoria_modulo ON auditoria (modulo);
 CREATE INDEX idx_auditoria_fecha ON auditoria (fecha_hora);
+
+-- -------------------------------------------------------------
+-- Tabla: clientes
+-- Objetivo: ficha de clientes del taller (Modulo de Clientes).
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS clientes (
+    id_cliente   BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre       VARCHAR(60)  NOT NULL,
+    apellido     VARCHAR(60)  NOT NULL,
+    dni          VARCHAR(15)  NOT NULL,
+    email        VARCHAR(150) NULL,
+    telefono     VARCHAR(30)  NOT NULL,
+    direccion    VARCHAR(200) NULL,
+    estado       ENUM('ACTIVO', 'INACTIVO') NOT NULL DEFAULT 'ACTIVO',
+    created_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT uq_clientes_dni UNIQUE (dni)
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_clientes_apellido ON clientes (apellido, nombre);
+CREATE INDEX idx_clientes_telefono ON clientes (telefono);
+CREATE INDEX idx_clientes_estado ON clientes (estado);
+
+-- Nota: la restriccion "no se puede dar de baja un cliente con vehiculos
+-- activos, turnos pendientes o saldo en cuenta corriente" se activa cuando
+-- se incorporen esos modulos (las FK correspondientes se agregaran con
+-- ON DELETE RESTRICT y la validacion de negocio en ClienteServiceImpl).

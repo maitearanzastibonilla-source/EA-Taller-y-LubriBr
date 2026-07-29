@@ -4,7 +4,7 @@ Un modulo a la vez, con autorizacion explicita antes de iniciar el siguiente (pr
 
 - [x] Base tecnica (Maven, MVC, JDBC/DataSource JNDI, Design System, seguridad transversal)
 - [x] Usuarios (login, roles, auditoria, bloqueo de cuenta)
-- [ ] Clientes
+- [x] Clientes
 - [ ] Vehiculos
 - [ ] Turnos
 - [ ] Trabajos Realizados
@@ -20,11 +20,16 @@ Un modulo a la vez, con autorizacion explicita antes de iniciar el siguiente (pr
 
 ## Ultimo modulo finalizado
 
-**Modulo:** Usuarios
+**Modulo:** Clientes
 **Estado:** Terminado y verificado end-to-end (Tomcat 10 + MySQL 8 reales)
-**Archivos nuevos:** ver commit correspondiente (paquetes `entity`, `dto`, `dao`, `service`, `controller`, `validator`, `exception`, `utils`, `filter`, `listener`, `constants`, JSPs de `auth/`, `usuarios/`, `dashboard/`, `error/`, `layout/`, Design System completo en `assets/css` y `assets/js`, `db/schema.sql`, `db/seed.sql`)
-**Tablas nuevas:** `usuarios`, `auditoria`
-**Dependencias:** ninguna (modulo base, del que dependeran todos los demas para autenticacion/roles/auditoria)
+**Archivos nuevos:** `entity/Cliente.java`, `entity/EstadoCliente.java`, `dto/ClienteDTO.java`, `dto/ClienteFormDTO.java`, `dao/ClienteDAO(.impl)`, `service/ClienteService(.impl)`, `validator/ClienteValidator.java`, `exception/ClienteNoEncontradoException.java`, `exception/DatoDuplicadoException.java`, `controller/ClienteServlet.java`, `utils/ClienteMapper.java`, JSPs de `clientes/`, `docs/modulos/02-clientes.md`
+**Archivos modificados:** `db/schema.sql` (tabla `clientes`), `AppConstants.java` (modulo de auditoria), `ValidationUtils.java` (validacion de DNI/telefono), `validations.js` (validacion de formulario), `layout/header.jsp` y `dashboard.jsp` (link/card del modulo)
+**Tablas nuevas:** `clientes`
+**Dependencias:** Usuarios (auditoria, roles)
 **Resultado:** OK
 
-Siguiente paso: esperar autorizacion del cliente para iniciar el Modulo de Clientes.
+## Modulo anterior
+
+**Modulo:** Usuarios — login, roles, auditoria, bloqueo de cuenta. Ver `docs/modulos/01-usuarios.md`.
+
+Siguiente paso: esperar autorizacion del cliente para iniciar el Modulo de Vehiculos.

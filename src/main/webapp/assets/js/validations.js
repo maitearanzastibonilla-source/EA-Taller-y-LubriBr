@@ -81,6 +81,31 @@
         return true;
     }
 
+    function validarDni(campo) {
+        if (!validarCampoRequerido(campo, "El DNI es obligatorio.")) {
+            return false;
+        }
+        if (!/^\d{7,8}$/.test(campo.value.trim())) {
+            marcarError(campo, "Debe tener 7 u 8 numeros, sin puntos.");
+            return false;
+        }
+        limpiarError(campo);
+        return true;
+    }
+
+    function validarEmailOpcional(campo) {
+        if (!campo.value.trim()) {
+            limpiarError(campo);
+            return true;
+        }
+        if (!PATRON_EMAIL.test(campo.value.trim())) {
+            marcarError(campo, "El correo electronico no tiene un formato valido.");
+            return false;
+        }
+        limpiarError(campo);
+        return true;
+    }
+
     function inicializarFormularioLogin() {
         var form = document.querySelector("[data-form='login']");
         if (!form) {
@@ -125,8 +150,34 @@
         });
     }
 
+    function inicializarFormularioCliente() {
+        var form = document.querySelector("[data-form='cliente']");
+        if (!form) {
+            return;
+        }
+        var nombre = form.querySelector("[name='nombre']");
+        var apellido = form.querySelector("[name='apellido']");
+        var dni = form.querySelector("[name='dni']");
+        var telefono = form.querySelector("[name='telefono']");
+        var email = form.querySelector("[name='email']");
+
+        form.addEventListener("submit", function (event) {
+            var valido = true;
+            valido = validarCampoRequerido(nombre, "El nombre es obligatorio.") && valido;
+            valido = validarCampoRequerido(apellido, "El apellido es obligatorio.") && valido;
+            valido = validarDni(dni) && valido;
+            valido = validarCampoRequerido(telefono, "El telefono es obligatorio.") && valido;
+            valido = validarEmailOpcional(email) && valido;
+
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         inicializarFormularioLogin();
         inicializarFormularioUsuario();
+        inicializarFormularioCliente();
     });
 })();

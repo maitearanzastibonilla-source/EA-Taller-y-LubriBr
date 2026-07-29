@@ -13,6 +13,9 @@ public final class ValidationUtils {
     private static final Pattern EMAIL_PATTERN =
             Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
+    private static final Pattern DNI_PATTERN = Pattern.compile("^\\d{7,8}$");
+    private static final Pattern TELEFONO_PATTERN = Pattern.compile("^[0-9+()\\-\\s]{6,30}$");
+
     public static final int PASSWORD_LONGITUD_MINIMA = 8;
 
     private ValidationUtils() {
@@ -20,6 +23,14 @@ public final class ValidationUtils {
 
     public static boolean esEmailValido(String email) {
         return email != null && !email.isBlank() && EMAIL_PATTERN.matcher(email.trim()).matches();
+    }
+
+    public static boolean esDniValido(String dni) {
+        return dni != null && DNI_PATTERN.matcher(dni.trim()).matches();
+    }
+
+    public static boolean esTelefonoValido(String telefono) {
+        return telefono != null && TELEFONO_PATTERN.matcher(telefono.trim()).matches();
     }
 
     public static boolean esVacio(String valor) {

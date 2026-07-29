@@ -1,15 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
-<%--
-    Responsabilidad: apertura del documento HTML y del app-shell (sidebar +
-    topbar). Toda pantalla protegida (post-login) debe incluir este
-    fragmento antes de su contenido y layout/footer.jsp al finalizar.
-    Requiere que el Servlet haya definido en el request:
-      - tituloPagina (String)
-      - subtituloPagina (String, opcional)
-      - activeMenu (String: "dashboard" | "usuarios")
---%>
+<%-- shell comun (sidebar + topbar) para cualquier pantalla logueada.
+     espera tituloPagina, subtituloPagina (opcional) y activeMenu en el request --%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -44,6 +37,13 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
                 </span>
                 <span class="sidebar__link-text">Panel principal</span>
+            </a>
+            <a class="sidebar__link ${activeMenu == 'clientes' ? 'is-active' : ''}"
+               href="${pageContext.request.contextPath}/clientes">
+                <span class="sidebar__link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                </span>
+                <span class="sidebar__link-text">Clientes</span>
             </a>
 
             <c:if test="${sessionScope.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}">

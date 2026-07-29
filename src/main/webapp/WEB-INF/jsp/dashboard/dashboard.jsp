@@ -24,13 +24,13 @@
         </a>
     </c:if>
 
-    <div class="dashboard-module-card dashboard-module-card--disabled">
+    <a class="dashboard-module-card" href="${pageContext.request.contextPath}/clientes" style="text-decoration:none; color:inherit;">
         <div class="dashboard-module-card__icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
         </div>
         <h3>Clientes</h3>
-        <p>Proximamente.</p>
-    </div>
+        <p>Alta, busqueda y ficha de clientes del taller.</p>
+    </a>
 
     <div class="dashboard-module-card dashboard-module-card--disabled">
         <div class="dashboard-module-card__icon">
