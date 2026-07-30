@@ -19,4 +19,10 @@
         <function-class>com.eataller.utils.JspFunctions</function-class>
         <function-signature>java.lang.String fecha(java.time.LocalDateTime)</function-signature>
     </function>
+
+    <function>
+        <name>fechaDia</name>
+        <function-class>com.eataller.utils.JspFunctions</function-class>
+        <function-signature>java.lang.String fechaDia(java.time.LocalDate)</function-signature>
+    </function>
 </taglib>

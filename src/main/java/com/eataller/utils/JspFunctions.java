@@ -1,5 +1,6 @@
 package com.eataller.utils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -22,6 +23,10 @@ public final class JspFunctions {
     }
 
     public static String fecha(LocalDateTime fecha) {
+        return fecha == null ? "-" : fecha.format(FORMATO_FECHA);
+    }
+
+    public static String fechaDia(LocalDate fecha) {
         return fecha == null ? "-" : fecha.format(FORMATO_FECHA);
     }
 }

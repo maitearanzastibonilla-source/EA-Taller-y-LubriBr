@@ -253,11 +253,35 @@
         });
     }
 
+    function inicializarFormularioTrabajo() {
+        var form = document.querySelector("[data-form='trabajo']");
+        if (!form) {
+            return;
+        }
+        var vehiculoId = form.querySelector("[name='vehiculoId']");
+        var fechaIngreso = form.querySelector("[name='fechaIngreso']");
+        var descripcion = form.querySelector("[name='descripcion']");
+
+        form.addEventListener("submit", function (event) {
+            var valido = true;
+            if (vehiculoId && vehiculoId.tagName === "SELECT") {
+                valido = validarCampoRequerido(vehiculoId, "Debe seleccionar un vehiculo.") && valido;
+            }
+            valido = validarCampoRequerido(fechaIngreso, "La fecha de ingreso es obligatoria.") && valido;
+            valido = validarCampoRequerido(descripcion, "La descripcion es obligatoria.") && valido;
+
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         inicializarFormularioLogin();
         inicializarFormularioUsuario();
         inicializarFormularioCliente();
         inicializarFormularioVehiculo();
         inicializarFormularioTurno();
+        inicializarFormularioTrabajo();
     });
 })();

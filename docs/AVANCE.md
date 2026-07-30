@@ -7,7 +7,7 @@ Un modulo a la vez, con autorizacion explicita antes de iniciar el siguiente (pr
 - [x] Clientes
 - [x] Vehiculos
 - [x] Turnos
-- [ ] Trabajos Realizados
+- [x] Trabajos Realizados
 - [ ] Items de Trabajo
 - [ ] Comprobantes
 - [ ] Ventas Directas
@@ -20,19 +20,21 @@ Un modulo a la vez, con autorizacion explicita antes de iniciar el siguiente (pr
 
 ## Ultimo modulo finalizado
 
-**Modulo:** Turnos
+**Modulo:** Trabajos Realizados
 **Estado:** Terminado y verificado end-to-end (Tomcat 10 + MySQL 8 reales)
-**Archivos nuevos:** `entity/Turno.java`, `entity/EstadoTurno.java`, `entity/TipoServicio.java`, `dto/TurnoDTO.java`, `dto/TurnoFormDTO.java`, `dao/TurnoDAO(.impl)`, `service/TurnoService(.impl)`, `validator/TurnoValidator.java`, `exception/TurnoNoEncontradoException.java`, `exception/TurnoOcupadoException.java`, `controller/TurnoServlet.java`, `utils/TurnoMapper.java`, `assets/js/turnos.js`, JSPs de `turnos/`, `docs/modulos/04-turnos.md`
-**Archivos modificados:** `db/schema.sql` (tabla `turnos`, FKs a `clientes`/`vehiculos`/`usuarios`), `AppConstants.java` (capacidad simultanea), `validations.js`, `layout/footer.jsp`, `layout/header.jsp` y `dashboard.jsp` (link/card)
-**Bug encontrado y corregido durante la verificacion:** la fecha/hora del turno se guardaba corrida (una carga a las 10:00 quedaba en 07:00) por usar `Timestamp` junto con `serverTimezone` en la URL JDBC. Se soluciono usando `setObject`/`getObject` con `LocalDateTime` para esa columna, que no aplica conversion de zona horaria.
-**Tablas nuevas:** `turnos`
-**Dependencias:** Clientes, Vehiculos, Usuarios
+**Archivos nuevos:** `entity/TrabajoRealizado.java`, `entity/EstadoTrabajo.java`, `dto/TrabajoDTO.java`, `dto/TrabajoFormDTO.java`, `dao/TrabajoDAO(.impl)`, `service/TrabajoService(.impl)`, `validator/TrabajoValidator.java`, `exception/TrabajoNoEncontradoException.java`, `controller/TrabajoServlet.java`, `utils/TrabajoMapper.java`, JSPs de `trabajos/`, `docs/modulos/05-trabajos.md`
+**Archivos modificados:** `db/schema.sql` (tabla `trabajos_realizados`, FKs a `vehiculos`/`turnos`/`usuarios`), `AppConstants.java`, `JspFunctions.java` y `ea-functions.tld` (nueva funcion `fechaDia` para columnas `LocalDate`), `validations.js`, `layout/header.jsp` y `dashboard.jsp` (link/card), `turnos/listado.jsp` (atajo "Iniciar trabajo")
+**Decision de modelado:** se agrego la columna `activo` (aparte de `estado`) para poder implementar la baja logica que pide la Propuesta, ya que su propio enum de estado (en_proceso/finalizado/facturado) no tiene un valor para "dado de baja".
+**Bug encontrado y corregido durante la verificacion:** la funcion EL `ea:fecha` esperaba `LocalDateTime` y las fechas de este modulo son `LocalDate`, lo que rompia el listado con un `ELException`. Se agrego `ea:fechaDia` para columnas de solo fecha.
+**Tablas nuevas:** `trabajos_realizados`
+**Dependencias:** Vehiculos, Turnos, Usuarios
 **Resultado:** OK
 
 ## Modulos anteriores
 
+- **Turnos** — agenda con control de capacidad simultanea. Ver `docs/modulos/04-turnos.md`.
 - **Vehiculos** — patente unica, bloqueada para OPERADOR. Ver `docs/modulos/03-vehiculos.md`.
 - **Clientes** — alta/baja/consulta de clientes, DNI y telefono unicos. Ver `docs/modulos/02-clientes.md`.
 - **Usuarios** — login, roles, auditoria, bloqueo de cuenta. Ver `docs/modulos/01-usuarios.md`.
 
-Siguiente paso: esperar autorizacion del cliente para iniciar el Modulo de Trabajos Realizados.
+Siguiente paso: esperar autorizacion del cliente para iniciar el Modulo de Items de Trabajo.

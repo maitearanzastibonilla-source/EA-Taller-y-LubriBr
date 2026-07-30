@@ -59,6 +59,13 @@
                 </span>
                 <span class="sidebar__link-text">Turnos</span>
             </a>
+            <a class="sidebar__link ${activeMenu == 'trabajos' ? 'is-active' : ''}"
+               href="${pageContext.request.contextPath}/trabajos">
+                <span class="sidebar__link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.1-3.1a4 4 0 01-5.3 5.3L6.4 20.6a2 2 0 01-2.8-2.8L12.7 8.7a4 4 0 015.3-5.3l-3.1 3.1z"/></svg>
+                </span>
+                <span class="sidebar__link-text">Trabajos</span>
+            </a>
 
             <c:if test="${sessionScope.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}">
                 <span class="sidebar__section-label">Administracion</span>

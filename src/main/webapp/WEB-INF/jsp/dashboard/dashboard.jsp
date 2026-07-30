@@ -47,6 +47,14 @@
         <h3>Turnos</h3>
         <p>Agenda de servicios del taller.</p>
     </a>
+
+    <a class="dashboard-module-card" href="${pageContext.request.contextPath}/trabajos" style="text-decoration:none; color:inherit;">
+        <div class="dashboard-module-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.1-3.1a4 4 0 01-5.3 5.3L6.4 20.6a2 2 0 01-2.8-2.8L12.7 8.7a4 4 0 015.3-5.3l-3.1 3.1z"/></svg>
+        </div>
+        <h3>Trabajos</h3>
+        <p>Seguimiento de trabajos realizados por vehiculo.</p>
+    </a>
 </div>
 
 <%@ include file="/WEB-INF/jsp/layout/footer.jsp" %>

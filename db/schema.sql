@@ -159,3 +159,47 @@ CREATE INDEX idx_turnos_cliente ON turnos (cliente_id);
 CREATE INDEX idx_turnos_vehiculo ON turnos (vehiculo_id);
 CREATE INDEX idx_turnos_estado ON turnos (estado);
 CREATE INDEX idx_turnos_tipo_servicio ON turnos (tipo_servicio);
+
+-- -------------------------------------------------------------
+-- Tabla: trabajos_realizados
+-- Objetivo: registro operativo de cada trabajo hecho sobre un vehiculo
+-- (Modulo de Trabajos Realizados). Puede originarse en un turno o cargarse
+-- directamente desde el mostrador (turno_id queda NULL en ese caso).
+--
+-- La Propuesta Tecnica no incluye un valor de "estado" para la baja logica
+-- dentro del enum de trabajos (en_proceso/finalizado/facturado, que
+-- describe la etapa del trabajo, no si esta dado de baja). Se agrego la
+-- columna `activo`, siguiendo el mismo criterio que usuarios (rol +
+-- activo por separado), para poder implementar la baja administrativa que
+-- la Propuesta si pide en el texto.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS trabajos_realizados (
+    id_trabajo     BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    vehiculo_id    BIGINT UNSIGNED NOT NULL,
+    turno_id       BIGINT UNSIGNED NULL,
+    usuario_id     BIGINT UNSIGNED NOT NULL,
+    fecha_ingreso  DATE NOT NULL,
+    fecha_egreso   DATE NULL,
+    descripcion    TEXT NOT NULL,
+    estado         ENUM('EN_PROCESO', 'FINALIZADO', 'FACTURADO') NOT NULL DEFAULT 'EN_PROCESO',
+    activo         BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_trabajos_vehiculo FOREIGN KEY (vehiculo_id)
+        REFERENCES vehiculos (id_vehiculo) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_trabajos_turno FOREIGN KEY (turno_id)
+        REFERENCES turnos (id_turno) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT fk_trabajos_usuario FOREIGN KEY (usuario_id)
+        REFERENCES usuarios (id_usuario) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_trabajos_vehiculo ON trabajos_realizados (vehiculo_id);
+CREATE INDEX idx_trabajos_turno ON trabajos_realizados (turno_id);
+CREATE INDEX idx_trabajos_estado ON trabajos_realizados (estado);
+CREATE INDEX idx_trabajos_fecha_ingreso ON trabajos_realizados (fecha_ingreso);
+
+-- Nota: "no se puede cerrar un trabajo sin al menos un item registrado" y
+-- "no se puede eliminar un trabajo con comprobantes o movimientos
+-- economicos" se activan cuando existan esas tablas (Items de Trabajo,
+-- Comprobantes).

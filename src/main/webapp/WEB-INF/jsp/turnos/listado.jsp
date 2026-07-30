@@ -104,6 +104,10 @@
                                            href="${pageContext.request.contextPath}/turnos?accion=editar&id=${t.idTurno}">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                                         </a>
+                                        <a class="btn btn--icon btn--ghost btn--sm" data-tooltip="Iniciar trabajo"
+                                           href="${pageContext.request.contextPath}/trabajos?accion=nuevo&turnoId=${t.idTurno}">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.1-3.1a4 4 0 01-5.3 5.3L6.4 20.6a2 2 0 01-2.8-2.8L12.7 8.7a4 4 0 015.3-5.3l-3.1 3.1z"/></svg>
+                                        </a>
                                         <form method="post" action="${pageContext.request.contextPath}/turnos"
                                               data-confirm="¿Cancelar el turno del ${ea:fechaHora(t.fechaHora)}?">
                                             <input type="hidden" name="csrfToken" value="${csrfToken}">
