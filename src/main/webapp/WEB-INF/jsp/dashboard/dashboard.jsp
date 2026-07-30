@@ -71,6 +71,14 @@
         <h3>Proveedores</h3>
         <p>Registro de proveedores de repuestos e insumos.</p>
     </a>
+
+    <a class="dashboard-module-card" href="${pageContext.request.contextPath}/productos" style="text-decoration:none; color:inherit;">
+        <div class="dashboard-module-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>
+        </div>
+        <h3>Productos</h3>
+        <p>Catalogo de repuestos e insumos, precios y stock.</p>
+    </a>
 </div>
 
 <%@ include file="/WEB-INF/jsp/layout/footer.jsp" %>

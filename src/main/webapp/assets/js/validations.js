@@ -344,6 +344,37 @@
         });
     }
 
+    function inicializarFormularioProducto() {
+        var form = document.querySelector("[data-form='producto']");
+        if (!form) {
+            return;
+        }
+        var nombre = form.querySelector("[name='nombre']");
+        var proveedorId = form.querySelector("[name='proveedorId']");
+        var precioVenta = form.querySelector("[name='precioVenta']");
+        var stockMinimo = form.querySelector("[name='stockMinimo']");
+        var stockActual = form.querySelector("[name='stockActual']");
+
+        form.addEventListener("submit", function (event) {
+            var valido = true;
+            valido = validarCampoRequerido(nombre, "El nombre es obligatorio.") && valido;
+            valido = validarCampoRequerido(proveedorId, "Debe seleccionar un proveedor.") && valido;
+            valido = validarCampoRequerido(precioVenta, "El precio de venta es obligatorio.") && valido;
+            if (precioVenta.value && parseFloat(precioVenta.value) <= 0) {
+                marcarError(precioVenta, "El precio de venta debe ser mayor a cero.");
+                valido = false;
+            }
+            valido = validarCampoRequerido(stockMinimo, "El stock minimo es obligatorio.") && valido;
+            if (stockActual) {
+                valido = validarCampoRequerido(stockActual, "El stock inicial es obligatorio.") && valido;
+            }
+
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         inicializarFormularioLogin();
         inicializarFormularioUsuario();
@@ -354,5 +385,6 @@
         inicializarFormularioItemTrabajo();
         inicializarFormularioComprobante();
         inicializarFormularioProveedor();
+        inicializarFormularioProducto();
     });
 })();

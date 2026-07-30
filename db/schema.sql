@@ -209,12 +209,11 @@ CREATE INDEX idx_trabajos_fecha_ingreso ON trabajos_realizados (fecha_ingreso);
 -- Objetivo: detalle de repuestos/mano de obra de cada trabajo realizado
 -- (Modulo de Items de Trabajo).
 --
--- producto_id queda sin FK por ahora: el Modulo de Productos (catalogo y
--- stock) todavia no existe en el sistema, aunque el orden de modulos de la
--- Propuesta Tecnica pone a Items de Trabajo antes que Productos. Por eso
--- todo item se carga hoy como descripcion libre (mano de obra u otro
--- servicio); cuando se desarrolle Productos se agregara la restriccion
--- FOREIGN KEY sobre producto_id y el descuento/restauracion de stock.
+-- producto_id se agrega sin FK en esta seccion (Productos todavia no
+-- existe en este punto del script); la restriccion se agrega mas abajo,
+-- una vez creada la tabla productos. El formulario de Items de Trabajo
+-- sigue trabajando hoy solo con descripcion_libre: la Propuesta no exige
+-- ese modulo depende de un catalogo real, a diferencia de Items de Venta.
 -- -------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS items_trabajo (
     id_item           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -287,3 +286,50 @@ CREATE INDEX idx_proveedores_estado ON proveedores (estado);
 
 -- Nota: "no se puede eliminar un proveedor con productos activos o compras
 -- registradas" se activa cuando existan esas tablas (Productos, Compras).
+
+-- -------------------------------------------------------------
+-- Tabla: productos
+-- Objetivo: catalogo de repuestos e insumos con precio y stock (Modulo de
+-- Productos). categoria queda como texto libre (la Propuesta da ejemplos
+-- abiertos: "repuesto, lubricante, consumible, etc.") en vez de un ENUM
+-- cerrado.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS productos (
+    id_producto   BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    proveedor_id  BIGINT UNSIGNED NOT NULL,
+    nombre        VARCHAR(150) NOT NULL,
+    descripcion   VARCHAR(500) NULL,
+    categoria     VARCHAR(60)  NULL,
+    precio_venta  DECIMAL(12,2) NOT NULL,
+    precio_costo  DECIMAL(12,2) NULL,
+    stock_actual  INT NOT NULL DEFAULT 0,
+    stock_minimo  INT NOT NULL DEFAULT 0,
+    estado        ENUM('ACTIVO', 'INACTIVO') NOT NULL DEFAULT 'ACTIVO',
+    created_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_productos_proveedor FOREIGN KEY (proveedor_id)
+        REFERENCES proveedores (id_proveedor) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT ck_productos_precio_venta CHECK (precio_venta > 0),
+    CONSTRAINT ck_productos_precio_costo CHECK (precio_costo IS NULL OR precio_costo >= 0),
+    CONSTRAINT ck_productos_stock_actual CHECK (stock_actual >= 0),
+    CONSTRAINT ck_productos_stock_minimo CHECK (stock_minimo >= 0)
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_productos_proveedor ON productos (proveedor_id);
+CREATE INDEX idx_productos_nombre ON productos (nombre);
+CREATE INDEX idx_productos_categoria ON productos (categoria);
+CREATE INDEX idx_productos_estado ON productos (estado);
+
+-- Ahora que productos existe, se cierra la FK que habia quedado pendiente
+-- en items_trabajo (ver nota en esa tabla). No cambia el comportamiento
+-- actual: el formulario de Items de Trabajo sigue cargando solo por
+-- descripcion_libre, esto solo asegura integridad referencial a futuro.
+ALTER TABLE items_trabajo
+    ADD CONSTRAINT fk_items_trabajo_producto FOREIGN KEY (producto_id)
+        REFERENCES productos (id_producto) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- Nota: "no se puede eliminar un producto usado en ventas, trabajos o
+-- compras" se implementa hoy solo contra items_trabajo (la unica tabla que
+-- ya existe); se completara contra items_venta e items_compra cuando esos
+-- modulos existan.

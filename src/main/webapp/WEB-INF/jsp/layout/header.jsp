@@ -80,6 +80,13 @@
                 </span>
                 <span class="sidebar__link-text">Proveedores</span>
             </a>
+            <a class="sidebar__link ${activeMenu == 'productos' ? 'is-active' : ''}"
+               href="${pageContext.request.contextPath}/productos">
+                <span class="sidebar__link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>
+                </span>
+                <span class="sidebar__link-text">Productos</span>
+            </a>
 
             <c:if test="${sessionScope.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}">
                 <span class="sidebar__section-label">Administracion</span>

@@ -11,7 +11,7 @@ Un modulo a la vez, con autorizacion explicita antes de iniciar el siguiente (pr
 - [x] Items de Trabajo
 - [x] Comprobantes
 - [x] Proveedores
-- [ ] Productos
+- [x] Productos
 - [ ] Ventas Directas
 - [ ] Items de Venta
 - [ ] Compras
@@ -22,17 +22,18 @@ Un modulo a la vez, con autorizacion explicita antes de iniciar el siguiente (pr
 
 ## Ultimo modulo finalizado
 
-**Modulo:** Proveedores
+**Modulo:** Productos
 **Estado:** Terminado y verificado end-to-end (Tomcat 10 + MySQL 8 reales)
-**Archivos nuevos:** `entity/Proveedor.java`, `dto/ProveedorDTO.java`, `dto/ProveedorFormDTO.java`, `dao/ProveedorDAO(.impl)`, `service/ProveedorService(.impl)`, `validator/ProveedorValidator.java`, `exception/ProveedorNoEncontradoException.java`, `controller/ProveedorServlet.java`, `utils/ProveedorMapper.java`, `WEB-INF/jsp/proveedores/{listado,form}.jsp`, `docs/modulos/08-proveedores.md`
-**Archivos modificados:** `db/schema.sql` (tabla `proveedores`), `AppConstants.java`, `layout/header.jsp`, `dashboard/dashboard.jsp`, `validations.js`
-**Decision de modelado:** modulo adelantado en el orden de construccion (ver nota arriba) porque Productos, del que depende Ventas Directas/Items de Venta, exige un proveedor obligatorio. Sin restriccion de rol en ninguna operacion, ya que la Propuesta no la pide para este modulo (a diferencia de Clientes).
-**Tablas nuevas:** `proveedores`
-**Dependencias:** ninguna (modulo independiente); es dependencia de Productos
+**Archivos nuevos:** `entity/Producto.java`, `dto/ProductoDTO.java`, `dto/ProductoFormDTO.java`, `dao/ProductoDAO(.impl)`, `service/ProductoService(.impl)`, `validator/ProductoValidator.java`, `exception/ProductoNoEncontradoException.java`, `controller/ProductoServlet.java`, `utils/ProductoMapper.java`, `WEB-INF/jsp/productos/{listado,form}.jsp`, `docs/modulos/09-productos.md`
+**Archivos modificados:** `db/schema.sql` (tabla `productos` + FK `fk_items_trabajo_producto` sobre `items_trabajo`, que quedaba pendiente desde el modulo de Items de Trabajo), `AppConstants.java`, `layout/header.jsp`, `dashboard/dashboard.jsp`, `validations.js`
+**Decision de modelado:** `categoria` como texto libre (la Propuesta da ejemplos abiertos, no una lista cerrada); `stock_actual` solo se carga en el alta y no se edita desde el formulario de modificacion (la Propuesta no lo incluye ahi); baja logica bloqueada si el producto esta referenciado en `items_trabajo`, verificado con una consulta real.
+**Tablas nuevas:** `productos`
+**Dependencias:** Proveedores; es dependencia de Ventas Directas/Items de Venta y Compras/Items de Compra
 **Resultado:** OK
 
 ## Modulos anteriores
 
+- **Proveedores** — CRUD sin restriccion de rol, adelantado en el orden. Ver `docs/modulos/08-proveedores.md`.
 - **Comprobantes** — generacion de PDF real, alta/anulacion, cierre del ciclo de facturacion. Ver `docs/modulos/07-comprobantes.md`.
 - **Items de Trabajo** — detalle de repuestos y mano de obra por trabajo. Ver `docs/modulos/06-items-trabajo.md`.
 - **Trabajos Realizados** — en proceso/finalizado/facturado, reapertura y baja solo admin. Ver `docs/modulos/05-trabajos.md`.
@@ -41,4 +42,4 @@ Un modulo a la vez, con autorizacion explicita antes de iniciar el siguiente (pr
 - **Clientes** — alta/baja/consulta de clientes, DNI y telefono unicos. Ver `docs/modulos/02-clientes.md`.
 - **Usuarios** — login, roles, auditoria, bloqueo de cuenta. Ver `docs/modulos/01-usuarios.md`.
 
-Siguiente paso: esperar autorizacion del cliente para iniciar el Modulo de Productos.
+Siguiente paso: esperar autorizacion del cliente para iniciar el Modulo de Ventas Directas (junto con Items de Venta, con descuento y restauracion real de stock contra `productos`).
