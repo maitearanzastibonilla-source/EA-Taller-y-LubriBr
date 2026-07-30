@@ -261,3 +261,29 @@ CREATE TABLE IF NOT EXISTS comprobantes (
 CREATE INDEX idx_comprobantes_trabajo ON comprobantes (trabajo_id);
 CREATE INDEX idx_comprobantes_estado ON comprobantes (estado);
 CREATE INDEX idx_comprobantes_fecha ON comprobantes (fecha);
+
+-- -------------------------------------------------------------
+-- Tabla: proveedores
+-- Objetivo: registro de proveedores de repuestos e insumos (Modulo de
+-- Proveedores). La Propuesta ordena este modulo despues de Ventas Directas
+-- e Items de Venta, pero Productos (del que depende Items de Venta para
+-- validar y descontar stock real) exige un proveedor obligatorio. Se
+-- reordeno la construccion para resolver esa dependencia real: primero
+-- Proveedores, despues Productos, y recien entonces Ventas Directas.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS proveedores (
+    id_proveedor  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre        VARCHAR(100) NOT NULL,
+    contacto      VARCHAR(100) NULL,
+    telefono      VARCHAR(30)  NOT NULL,
+    email         VARCHAR(150) NULL,
+    estado        ENUM('ACTIVO', 'INACTIVO') NOT NULL DEFAULT 'ACTIVO',
+    created_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_proveedores_nombre ON proveedores (nombre);
+CREATE INDEX idx_proveedores_estado ON proveedores (estado);
+
+-- Nota: "no se puede eliminar un proveedor con productos activos o compras
+-- registradas" se activa cuando existan esas tablas (Productos, Compras).

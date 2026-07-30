@@ -320,6 +320,30 @@
         });
     }
 
+    function inicializarFormularioProveedor() {
+        var form = document.querySelector("[data-form='proveedor']");
+        if (!form) {
+            return;
+        }
+        var nombre = form.querySelector("[name='nombre']");
+        var telefono = form.querySelector("[name='telefono']");
+        var email = form.querySelector("[name='email']");
+
+        form.addEventListener("submit", function (event) {
+            var valido = true;
+            valido = validarCampoRequerido(nombre, "El nombre es obligatorio.") && valido;
+            valido = validarCampoRequerido(telefono, "El telefono es obligatorio.") && valido;
+            if (email.value && !PATRON_EMAIL.test(email.value.trim())) {
+                marcarError(email, "El correo electronico no tiene un formato valido.");
+                valido = false;
+            }
+
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         inicializarFormularioLogin();
         inicializarFormularioUsuario();
@@ -329,5 +353,6 @@
         inicializarFormularioTrabajo();
         inicializarFormularioItemTrabajo();
         inicializarFormularioComprobante();
+        inicializarFormularioProveedor();
     });
 })();
