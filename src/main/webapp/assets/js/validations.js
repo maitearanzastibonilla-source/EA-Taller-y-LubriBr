@@ -276,6 +276,31 @@
         });
     }
 
+    function inicializarFormularioItemTrabajo() {
+        var form = document.querySelector("[data-form='item-trabajo']");
+        if (!form) {
+            return;
+        }
+        var descripcion = form.querySelector("[name='descripcionLibre']");
+        var cantidad = form.querySelector("[name='cantidad']");
+        var precioUnitario = form.querySelector("[name='precioUnitario']");
+
+        form.addEventListener("submit", function (event) {
+            var valido = true;
+            valido = validarCampoRequerido(descripcion, "La descripcion es obligatoria.") && valido;
+            valido = validarCampoRequerido(cantidad, "La cantidad es obligatoria.") && valido;
+            if (cantidad.value && parseFloat(cantidad.value) <= 0) {
+                marcarError(cantidad, "La cantidad debe ser mayor a cero.");
+                valido = false;
+            }
+            valido = validarCampoRequerido(precioUnitario, "El precio unitario es obligatorio.") && valido;
+
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         inicializarFormularioLogin();
         inicializarFormularioUsuario();
@@ -283,5 +308,6 @@
         inicializarFormularioVehiculo();
         inicializarFormularioTurno();
         inicializarFormularioTrabajo();
+        inicializarFormularioItemTrabajo();
     });
 })();

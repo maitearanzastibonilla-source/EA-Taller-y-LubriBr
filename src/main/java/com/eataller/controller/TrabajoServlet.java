@@ -11,10 +11,12 @@ import com.eataller.exception.UsuarioSinPermisosException;
 import com.eataller.exception.ValidacionException;
 import com.eataller.exception.VehiculoNoEncontradoException;
 import com.eataller.service.ClienteService;
+import com.eataller.service.ItemTrabajoService;
 import com.eataller.service.TrabajoService;
 import com.eataller.service.TurnoService;
 import com.eataller.service.VehiculoService;
 import com.eataller.service.impl.ClienteServiceImpl;
+import com.eataller.service.impl.ItemTrabajoServiceImpl;
 import com.eataller.service.impl.TrabajoServiceImpl;
 import com.eataller.service.impl.TurnoServiceImpl;
 import com.eataller.service.impl.VehiculoServiceImpl;
@@ -46,6 +48,7 @@ public class TrabajoServlet extends HttpServlet {
     private final ClienteService clienteService = new ClienteServiceImpl();
     private final VehiculoService vehiculoService = new VehiculoServiceImpl();
     private final TurnoService turnoService = new TurnoServiceImpl();
+    private final ItemTrabajoService itemTrabajoService = new ItemTrabajoServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -57,6 +60,8 @@ public class TrabajoServlet extends HttpServlet {
                 mostrarFormularioAlta(request, response);
             } else if ("editar".equals(accion)) {
                 mostrarFormularioEdicion(request, response);
+            } else if ("detalle".equals(accion)) {
+                mostrarDetalle(request, response);
             } else {
                 mostrarListado(request, response);
             }
@@ -160,6 +165,32 @@ public class TrabajoServlet extends HttpServlet {
         request.setAttribute("trabajoActual", trabajo);
         request.setAttribute("csrfToken", CsrfTokenUtils.obtenerOGenerarToken(request));
         request.getRequestDispatcher("/WEB-INF/jsp/trabajos/form.jsp").forward(request, response);
+    }
+
+    private void mostrarDetalle(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException, TrabajoNoEncontradoException {
+
+        Long idTrabajo = parsearLong(request.getParameter("id"));
+        TrabajoDTO trabajo = trabajoService.obtenerPorId(idTrabajo);
+        var items = itemTrabajoService.listarPorTrabajo(idTrabajo);
+
+        java.math.BigDecimal total = items.stream()
+                .map(com.eataller.dto.ItemTrabajoDTO::getSubtotal)
+                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+
+        Long idItemEditar = parsearLong(request.getParameter("editarItem"));
+        if (idItemEditar != null) {
+            items.stream()
+                    .filter(i -> i.getIdItem().equals(idItemEditar))
+                    .findFirst()
+                    .ifPresent(i -> request.setAttribute("itemEnEdicion", i));
+        }
+
+        request.setAttribute("trabajo", trabajo);
+        request.setAttribute("items", items);
+        request.setAttribute("totalItems", total);
+        request.setAttribute("csrfToken", CsrfTokenUtils.obtenerOGenerarToken(request));
+        request.getRequestDispatcher("/WEB-INF/jsp/trabajos/detalle.jsp").forward(request, response);
     }
 
     private void guardar(HttpServletRequest request, HttpServletResponse response)

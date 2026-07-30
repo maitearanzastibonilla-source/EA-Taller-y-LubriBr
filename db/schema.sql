@@ -203,3 +203,33 @@ CREATE INDEX idx_trabajos_fecha_ingreso ON trabajos_realizados (fecha_ingreso);
 -- "no se puede eliminar un trabajo con comprobantes o movimientos
 -- economicos" se activan cuando existan esas tablas (Items de Trabajo,
 -- Comprobantes).
+
+-- -------------------------------------------------------------
+-- Tabla: items_trabajo
+-- Objetivo: detalle de repuestos/mano de obra de cada trabajo realizado
+-- (Modulo de Items de Trabajo).
+--
+-- producto_id queda sin FK por ahora: el Modulo de Productos (catalogo y
+-- stock) todavia no existe en el sistema, aunque el orden de modulos de la
+-- Propuesta Tecnica pone a Items de Trabajo antes que Productos. Por eso
+-- todo item se carga hoy como descripcion libre (mano de obra u otro
+-- servicio); cuando se desarrolle Productos se agregara la restriccion
+-- FOREIGN KEY sobre producto_id y el descuento/restauracion de stock.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS items_trabajo (
+    id_item           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    trabajo_id        BIGINT UNSIGNED NOT NULL,
+    producto_id       BIGINT UNSIGNED NULL,
+    descripcion_libre VARCHAR(300) NULL,
+    cantidad          DECIMAL(10,2) NOT NULL,
+    precio_unitario   DECIMAL(12,2) NOT NULL,
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_items_trabajo_trabajo FOREIGN KEY (trabajo_id)
+        REFERENCES trabajos_realizados (id_trabajo) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT ck_items_trabajo_cantidad CHECK (cantidad > 0),
+    CONSTRAINT ck_items_trabajo_precio CHECK (precio_unitario >= 0)
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_items_trabajo_trabajo ON items_trabajo (trabajo_id);

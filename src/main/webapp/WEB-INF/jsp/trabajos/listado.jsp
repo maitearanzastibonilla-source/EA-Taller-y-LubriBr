@@ -96,6 +96,10 @@
                             </td>
                             <td data-label="Acciones" class="col-actions">
                                 <div class="row-actions">
+                                    <a class="btn btn--icon btn--ghost btn--sm" data-tooltip="Ver items"
+                                       href="${pageContext.request.contextPath}/trabajos?accion=detalle&id=${tr.idTrabajo}">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
+                                    </a>
                                     <c:if test="${tr.estado.name() == 'EN_PROCESO'}">
                                         <a class="btn btn--icon btn--ghost btn--sm" data-tooltip="Editar"
                                            href="${pageContext.request.contextPath}/trabajos?accion=editar&id=${tr.idTrabajo}">
