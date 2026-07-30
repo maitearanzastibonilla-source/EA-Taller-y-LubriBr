@@ -233,3 +233,31 @@ CREATE TABLE IF NOT EXISTS items_trabajo (
 ) ENGINE = InnoDB;
 
 CREATE INDEX idx_items_trabajo_trabajo ON items_trabajo (trabajo_id);
+
+-- -------------------------------------------------------------
+-- Tabla: comprobantes
+-- Objetivo: comprobante de cobro emitido sobre un trabajo finalizado
+-- (Modulo de Comprobantes). pdf_url guarda la ruta absoluta del PDF
+-- generado (fuera del directorio del WAR, para que sobreviva un
+-- redeploy). Se inserta con pdf_url vacio y se actualiza en la misma
+-- transaccion, una vez generado el archivo.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS comprobantes (
+    id_comprobante  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    trabajo_id      BIGINT UNSIGNED NOT NULL,
+    fecha           DATE NOT NULL,
+    total           DECIMAL(12,2) NOT NULL,
+    metodo_pago     ENUM('EFECTIVO', 'TRANSFERENCIA', 'TARJETA', 'OTRO') NOT NULL,
+    estado          ENUM('PENDIENTE', 'SENADO', 'COBRADO', 'ANULADO') NOT NULL DEFAULT 'PENDIENTE',
+    pdf_url         VARCHAR(300) NOT NULL DEFAULT '',
+    created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_comprobantes_trabajo FOREIGN KEY (trabajo_id)
+        REFERENCES trabajos_realizados (id_trabajo) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT ck_comprobantes_total CHECK (total >= 0)
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_comprobantes_trabajo ON comprobantes (trabajo_id);
+CREATE INDEX idx_comprobantes_estado ON comprobantes (estado);
+CREATE INDEX idx_comprobantes_fecha ON comprobantes (fecha);

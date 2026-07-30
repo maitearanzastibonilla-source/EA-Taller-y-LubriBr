@@ -66,6 +66,13 @@
                 </span>
                 <span class="sidebar__link-text">Trabajos</span>
             </a>
+            <a class="sidebar__link ${activeMenu == 'comprobantes' ? 'is-active' : ''}"
+               href="${pageContext.request.contextPath}/comprobantes">
+                <span class="sidebar__link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2h10a1 1 0 011 1v18l-2.5-1.5L13 21l-2.5-1.5L8 21l-2.5-1.5L3 21V6a4 4 0 014-4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+                </span>
+                <span class="sidebar__link-text">Comprobantes</span>
+            </a>
 
             <c:if test="${sessionScope.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}">
                 <span class="sidebar__section-label">Administracion</span>

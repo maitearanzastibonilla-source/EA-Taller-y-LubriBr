@@ -301,6 +301,25 @@
         });
     }
 
+    function inicializarFormularioComprobante() {
+        var form = document.querySelector("[data-form='comprobante']");
+        if (!form) {
+            return;
+        }
+        var metodoPago = form.querySelector("[name='metodoPago']");
+        var estado = form.querySelector("[name='estado']");
+
+        form.addEventListener("submit", function (event) {
+            var valido = true;
+            valido = validarCampoRequerido(metodoPago, "Debe seleccionar un metodo de pago.") && valido;
+            valido = validarCampoRequerido(estado, "Debe seleccionar un estado.") && valido;
+
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         inicializarFormularioLogin();
         inicializarFormularioUsuario();
@@ -309,5 +328,6 @@
         inicializarFormularioTurno();
         inicializarFormularioTrabajo();
         inicializarFormularioItemTrabajo();
+        inicializarFormularioComprobante();
     });
 })();

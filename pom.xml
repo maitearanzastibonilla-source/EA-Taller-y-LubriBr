@@ -21,6 +21,7 @@
         <glassfish.jstl.version>3.0.1</glassfish.jstl.version>
         <mysql.connector.version>8.3.0</mysql.connector.version>
         <jbcrypt.version>0.4</jbcrypt.version>
+        <pdfbox.version>3.0.3</pdfbox.version>
         <junit.version>5.10.2</junit.version>
     </properties>
 
@@ -57,6 +58,13 @@
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>${jbcrypt.version}</version>
+        </dependency>
+
+        <!-- Generacion de comprobantes en PDF -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
         </dependency>
 
         <!-- Pruebas -->

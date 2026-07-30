@@ -43,6 +43,7 @@ public final class AppConstants {
     public static final String MODULO_TURNOS = "TURNOS";
     public static final String MODULO_TRABAJOS = "TRABAJOS";
     public static final String MODULO_ITEMS_TRABAJO = "ITEMS_TRABAJO";
+    public static final String MODULO_COMPROBANTES = "COMPROBANTES";
 
     // Capacidad operativa (cuantos turnos simultaneos admite el taller en el mismo horario)
     public static final int CAPACIDAD_TALLER_SIMULTANEA = 2;

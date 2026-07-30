@@ -11,11 +11,13 @@ import com.eataller.exception.UsuarioSinPermisosException;
 import com.eataller.exception.ValidacionException;
 import com.eataller.exception.VehiculoNoEncontradoException;
 import com.eataller.service.ClienteService;
+import com.eataller.service.ComprobanteService;
 import com.eataller.service.ItemTrabajoService;
 import com.eataller.service.TrabajoService;
 import com.eataller.service.TurnoService;
 import com.eataller.service.VehiculoService;
 import com.eataller.service.impl.ClienteServiceImpl;
+import com.eataller.service.impl.ComprobanteServiceImpl;
 import com.eataller.service.impl.ItemTrabajoServiceImpl;
 import com.eataller.service.impl.TrabajoServiceImpl;
 import com.eataller.service.impl.TurnoServiceImpl;
@@ -49,6 +51,7 @@ public class TrabajoServlet extends HttpServlet {
     private final VehiculoService vehiculoService = new VehiculoServiceImpl();
     private final TurnoService turnoService = new TurnoServiceImpl();
     private final ItemTrabajoService itemTrabajoService = new ItemTrabajoServiceImpl();
+    private final ComprobanteService comprobanteService = new ComprobanteServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -189,6 +192,7 @@ public class TrabajoServlet extends HttpServlet {
         request.setAttribute("trabajo", trabajo);
         request.setAttribute("items", items);
         request.setAttribute("totalItems", total);
+        request.setAttribute("comprobante", comprobanteService.obtenerActivoPorTrabajo(idTrabajo).orElse(null));
         request.setAttribute("csrfToken", CsrfTokenUtils.obtenerOGenerarToken(request));
         request.getRequestDispatcher("/WEB-INF/jsp/trabajos/detalle.jsp").forward(request, response);
     }

@@ -55,6 +55,14 @@
         <h3>Trabajos</h3>
         <p>Seguimiento de trabajos realizados por vehiculo.</p>
     </a>
+
+    <a class="dashboard-module-card" href="${pageContext.request.contextPath}/comprobantes" style="text-decoration:none; color:inherit;">
+        <div class="dashboard-module-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2h10a1 1 0 011 1v18l-2.5-1.5L13 21l-2.5-1.5L8 21l-2.5-1.5L3 21V6a4 4 0 014-4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        </div>
+        <h3>Comprobantes</h3>
+        <p>Comprobantes de cobro emitidos por trabajos finalizados.</p>
+    </a>
 </div>
 
 <%@ include file="/WEB-INF/jsp/layout/footer.jsp" %>

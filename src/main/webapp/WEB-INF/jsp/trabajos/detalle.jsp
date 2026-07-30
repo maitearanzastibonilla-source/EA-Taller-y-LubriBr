@@ -12,11 +12,16 @@
 <c:choose>
     <c:when test="${param.exito == 'item_guardado'}"><c:set var="flashExito" value="Item guardado correctamente." scope="request"/></c:when>
     <c:when test="${param.exito == 'item_eliminado'}"><c:set var="flashExito" value="Item eliminado." scope="request"/></c:when>
+    <c:when test="${param.exito == 'comprobante_generado'}"><c:set var="flashExito" value="Comprobante generado correctamente." scope="request"/></c:when>
+    <c:when test="${param.exito == 'comprobante_anulado'}"><c:set var="flashExito" value="Comprobante anulado." scope="request"/></c:when>
 </c:choose>
 <c:choose>
     <c:when test="${param.error == 'item_invalido'}"><c:set var="flashError" value="Revise los datos del item ingresado." scope="request"/></c:when>
     <c:when test="${param.error == 'no_encontrado'}"><c:set var="flashError" value="El item o el trabajo indicado no existe." scope="request"/></c:when>
     <c:when test="${param.error == 'csrf'}"><c:set var="flashError" value="La sesion del formulario expiro. Intente nuevamente." scope="request"/></c:when>
+    <c:when test="${param.error == 'comprobante_invalido'}"><c:set var="flashError" value="No se pudo generar el comprobante. Revise los datos." scope="request"/></c:when>
+    <c:when test="${param.error == 'ya_anulado'}"><c:set var="flashError" value="El comprobante ya se encuentra anulado." scope="request"/></c:when>
+    <c:when test="${param.error == 'sin_permisos'}"><c:set var="flashError" value="No tiene permisos para realizar esa accion." scope="request"/></c:when>
 </c:choose>
 
 <%@ include file="/WEB-INF/jsp/layout/header.jsp" %>
@@ -164,5 +169,96 @@
         </c:otherwise>
     </c:choose>
 </div>
+
+<h2 class="dashboard-section-title">Comprobante</h2>
+
+<c:choose>
+    <c:when test="${not empty comprobante}">
+        <div class="surface surface--padded" style="max-width: 720px;">
+            <div class="form-grid">
+                <div class="form-field">
+                    <span class="form-label">Numero</span>
+                    <div>#${comprobante.idComprobante}</div>
+                </div>
+                <div class="form-field">
+                    <span class="form-label">Fecha</span>
+                    <div>${ea:fechaDia(comprobante.fecha)}</div>
+                </div>
+                <div class="form-field">
+                    <span class="form-label">Total</span>
+                    <div><fmt:formatNumber value="${comprobante.total}" type="currency" currencySymbol="$"/></div>
+                </div>
+                <div class="form-field">
+                    <span class="form-label">Metodo de pago</span>
+                    <div>${comprobante.metodoPago.etiqueta}</div>
+                </div>
+                <div class="form-field">
+                    <span class="form-label">Estado</span>
+                    <div>
+                        <c:choose>
+                            <c:when test="${comprobante.estado.name() == 'ANULADO'}"><span class="badge badge--inactivo">Anulado</span></c:when>
+                            <c:when test="${comprobante.estado.name() == 'COBRADO'}"><span class="badge badge--activo">Cobrado</span></c:when>
+                            <c:otherwise><span class="badge badge--operador">${comprobante.estado.etiqueta}</span></c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <a class="btn btn--secondary" target="_blank"
+                   href="${pageContext.request.contextPath}/comprobantes?accion=descargar&id=${comprobante.idComprobante}">Ver PDF</a>
+                <c:if test="${comprobante.estado.name() != 'ANULADO' and sessionScope.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}">
+                    <form method="post" action="${pageContext.request.contextPath}/comprobantes"
+                          data-confirm="¿Anular este comprobante? El trabajo volvera a quedar finalizado sin facturar.">
+                        <input type="hidden" name="csrfToken" value="${csrfToken}">
+                        <input type="hidden" name="accion" value="anular">
+                        <input type="hidden" name="trabajoId" value="${trabajo.idTrabajo}">
+                        <input type="hidden" name="idComprobante" value="${comprobante.idComprobante}">
+                        <button type="submit" class="btn btn--danger">Anular comprobante</button>
+                    </form>
+                </c:if>
+            </div>
+        </div>
+    </c:when>
+    <c:when test="${trabajo.estado.name() == 'FINALIZADO' and not empty items}">
+        <div class="surface surface--padded" style="max-width: 720px;">
+            <form method="post" action="${pageContext.request.contextPath}/comprobantes" data-form="comprobante" novalidate>
+                <input type="hidden" name="csrfToken" value="${csrfToken}">
+                <input type="hidden" name="accion" value="generar">
+                <input type="hidden" name="trabajoId" value="${trabajo.idTrabajo}">
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label class="form-label" for="metodoPago">Metodo de pago <span class="form-label__required">*</span></label>
+                        <select class="form-control" id="metodoPago" name="metodoPago" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="EFECTIVO">Efectivo</option>
+                            <option value="TRANSFERENCIA">Transferencia</option>
+                            <option value="TARJETA">Tarjeta</option>
+                            <option value="OTRO">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label" for="estadoComprobante">Estado <span class="form-label__required">*</span></label>
+                        <select class="form-control" id="estadoComprobante" name="estado" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="PENDIENTE">Pendiente</option>
+                            <option value="SENADO">Senado</option>
+                            <option value="COBRADO">Cobrado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">Generar comprobante</button>
+                </div>
+            </form>
+        </div>
+    </c:when>
+    <c:otherwise>
+        <div class="empty-state">
+            <p>El comprobante se puede generar una vez que el trabajo este finalizado y tenga items cargados.</p>
+        </div>
+    </c:otherwise>
+</c:choose>
 
 <%@ include file="/WEB-INF/jsp/layout/footer.jsp" %>

@@ -31,6 +31,12 @@ public class TrabajoDAOImpl implements TrabajoDAO {
     private static final String SQL_REABRIR =
             "UPDATE trabajos_realizados SET estado = 'EN_PROCESO', fecha_egreso = NULL WHERE id_trabajo = ?";
 
+    private static final String SQL_MARCAR_FACTURADO =
+            "UPDATE trabajos_realizados SET estado = 'FACTURADO' WHERE id_trabajo = ?";
+
+    private static final String SQL_DESMARCAR_FACTURADO =
+            "UPDATE trabajos_realizados SET estado = 'FINALIZADO' WHERE id_trabajo = ?";
+
     private static final String SQL_CAMBIAR_ACTIVO =
             "UPDATE trabajos_realizados SET activo = ? WHERE id_trabajo = ?";
 
@@ -82,6 +88,22 @@ public class TrabajoDAOImpl implements TrabajoDAO {
     @Override
     public void reabrir(Connection connection, Long idTrabajo) throws SQLException {
         try (PreparedStatement stmt = connection.prepareStatement(SQL_REABRIR)) {
+            stmt.setLong(1, idTrabajo);
+            stmt.executeUpdate();
+        }
+    }
+
+    @Override
+    public void marcarFacturado(Connection connection, Long idTrabajo) throws SQLException {
+        try (PreparedStatement stmt = connection.prepareStatement(SQL_MARCAR_FACTURADO)) {
+            stmt.setLong(1, idTrabajo);
+            stmt.executeUpdate();
+        }
+    }
+
+    @Override
+    public void desmarcarFacturado(Connection connection, Long idTrabajo) throws SQLException {
+        try (PreparedStatement stmt = connection.prepareStatement(SQL_DESMARCAR_FACTURADO)) {
             stmt.setLong(1, idTrabajo);
             stmt.executeUpdate();
         }

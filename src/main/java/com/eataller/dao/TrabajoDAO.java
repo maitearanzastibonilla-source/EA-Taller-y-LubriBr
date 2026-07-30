@@ -17,6 +17,10 @@ public interface TrabajoDAO {
 
     void reabrir(Connection connection, Long idTrabajo) throws SQLException;
 
+    void marcarFacturado(Connection connection, Long idTrabajo) throws SQLException;
+
+    void desmarcarFacturado(Connection connection, Long idTrabajo) throws SQLException;
+
     void cambiarActivo(Connection connection, Long idTrabajo, boolean activo) throws SQLException;
 
     Optional<TrabajoRealizado> buscarPorId(Long idTrabajo) throws SQLException;
