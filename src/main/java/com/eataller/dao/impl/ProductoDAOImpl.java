@@ -30,11 +30,17 @@ public class ProductoDAOImpl implements ProductoDAO {
     private static final String SQL_CAMBIAR_ESTADO =
             "UPDATE productos SET estado = ? WHERE id_producto = ?";
 
+    private static final String SQL_AJUSTAR_STOCK =
+            "UPDATE productos SET stock_actual = stock_actual + ? WHERE id_producto = ?";
+
     private static final String SQL_BUSCAR_POR_ID =
             "SELECT * FROM productos WHERE id_producto = ?";
 
     private static final String SQL_TIENE_ITEMS_TRABAJO =
             "SELECT COUNT(*) FROM items_trabajo WHERE producto_id = ?";
+
+    private static final String SQL_TIENE_ITEMS_VENTA =
+            "SELECT COUNT(*) FROM items_venta WHERE producto_id = ?";
 
     @Override
     public Producto crear(Connection connection, Producto producto) throws SQLException {
@@ -92,13 +98,40 @@ public class ProductoDAOImpl implements ProductoDAO {
     }
 
     @Override
-    public Optional<Producto> buscarPorId(Long idProducto) throws SQLException {
-        try (Connection connection = DBConnectionManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(SQL_BUSCAR_POR_ID)) {
+    public void ajustarStock(Connection connection, Long idProducto, int delta) throws SQLException {
+        try (PreparedStatement stmt = connection.prepareStatement(SQL_AJUSTAR_STOCK)) {
+            stmt.setInt(1, delta);
+            stmt.setLong(2, idProducto);
+            stmt.executeUpdate();
+        }
+    }
 
+    @Override
+    public Optional<Producto> buscarPorId(Long idProducto) throws SQLException {
+        try (Connection connection = DBConnectionManager.getConnection()) {
+            return buscarPorId(connection, idProducto);
+        }
+    }
+
+    @Override
+    public Optional<Producto> buscarPorId(Connection connection, Long idProducto) throws SQLException {
+        try (PreparedStatement stmt = connection.prepareStatement(SQL_BUSCAR_POR_ID)) {
             stmt.setLong(1, idProducto);
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next() ? Optional.of(mapRow(rs)) : Optional.empty();
+            }
+        }
+    }
+
+    @Override
+    public boolean tieneItemsDeVentaAsociados(Long idProducto) throws SQLException {
+        try (Connection connection = DBConnectionManager.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(SQL_TIENE_ITEMS_VENTA)) {
+
+            stmt.setLong(1, idProducto);
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                return rs.getInt(1) > 0;
             }
         }
     }

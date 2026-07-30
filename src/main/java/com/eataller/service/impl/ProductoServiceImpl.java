@@ -176,6 +176,10 @@ public class ProductoServiceImpl implements ProductoService {
             throw new ValidacionException(Map.of("estado",
                     "No se puede dar de baja un producto utilizado en trabajos realizados."));
         }
+        if (!activo && productoDAO.tieneItemsDeVentaAsociados(idProducto)) {
+            throw new ValidacionException(Map.of("estado",
+                    "No se puede dar de baja un producto utilizado en ventas directas."));
+        }
 
         try (Connection connection = DBConnectionManager.getConnection()) {
             connection.setAutoCommit(false);

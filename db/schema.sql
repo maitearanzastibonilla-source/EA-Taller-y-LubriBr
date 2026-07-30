@@ -329,7 +329,64 @@ ALTER TABLE items_trabajo
     ADD CONSTRAINT fk_items_trabajo_producto FOREIGN KEY (producto_id)
         REFERENCES productos (id_producto) ON DELETE RESTRICT ON UPDATE CASCADE;
 
+-- -------------------------------------------------------------
+-- Tabla: ventas_directas
+-- Objetivo: ventas de productos en mostrador, sin trabajo mecanico asociado
+-- (Modulo de Ventas Directas). La Propuesta no incluye una columna de
+-- estado en el listado de campos de esta tabla, pero el texto describe tres
+-- situaciones (pendiente/confirmada/anulada: "modificacion mientras este
+-- pendiente", "no modificar confirmadas", "la baja funciona como anulacion
+-- logica"), asi que se agrego `estado` para poder implementar esas reglas,
+-- con el mismo criterio ya usado en trabajos_realizados con `activo`.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS ventas_directas (
+    id_venta     BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id   BIGINT UNSIGNED NOT NULL,
+    fecha        DATE NOT NULL,
+    total        DECIMAL(12,2) NOT NULL DEFAULT 0,
+    metodo_pago  ENUM('EFECTIVO', 'TRANSFERENCIA', 'TARJETA', 'OTRO') NOT NULL,
+    estado       ENUM('PENDIENTE', 'CONFIRMADA', 'ANULADA') NOT NULL DEFAULT 'PENDIENTE',
+    created_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_ventas_directas_usuario FOREIGN KEY (usuario_id)
+        REFERENCES usuarios (id_usuario) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT ck_ventas_directas_total CHECK (total >= 0)
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_ventas_directas_usuario ON ventas_directas (usuario_id);
+CREATE INDEX idx_ventas_directas_estado ON ventas_directas (estado);
+CREATE INDEX idx_ventas_directas_fecha ON ventas_directas (fecha);
+
+-- -------------------------------------------------------------
+-- Tabla: items_venta
+-- Objetivo: detalle de productos vendidos en cada venta directa (Modulo de
+-- Items de Venta). A diferencia de items_trabajo, aqui producto_id es
+-- obligatorio: la Propuesta exige que "cada item este vinculado a un
+-- producto existente" y valida stock disponible en tiempo real, sin dejar
+-- lugar a una descripcion libre.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS items_venta (
+    id_item_venta   BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    venta_id        BIGINT UNSIGNED NOT NULL,
+    producto_id     BIGINT UNSIGNED NOT NULL,
+    cantidad        INT NOT NULL,
+    precio_unitario DECIMAL(12,2) NOT NULL,
+    created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_items_venta_venta FOREIGN KEY (venta_id)
+        REFERENCES ventas_directas (id_venta) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_items_venta_producto FOREIGN KEY (producto_id)
+        REFERENCES productos (id_producto) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT ck_items_venta_cantidad CHECK (cantidad > 0),
+    CONSTRAINT ck_items_venta_precio CHECK (precio_unitario >= 0)
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_items_venta_venta ON items_venta (venta_id);
+CREATE INDEX idx_items_venta_producto ON items_venta (producto_id);
+
 -- Nota: "no se puede eliminar un producto usado en ventas, trabajos o
--- compras" se implementa hoy solo contra items_trabajo (la unica tabla que
--- ya existe); se completara contra items_venta e items_compra cuando esos
--- modulos existan.
+-- compras" ya se implementa contra items_trabajo e items_venta (las dos
+-- tablas que existen); se completara contra items_compra cuando ese modulo
+-- exista.

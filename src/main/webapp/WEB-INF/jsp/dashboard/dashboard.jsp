@@ -64,6 +64,14 @@
         <p>Comprobantes de cobro emitidos por trabajos finalizados.</p>
     </a>
 
+    <a class="dashboard-module-card" href="${pageContext.request.contextPath}/ventas" style="text-decoration:none; color:inherit;">
+        <div class="dashboard-module-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        </div>
+        <h3>Ventas Directas</h3>
+        <p>Ventas de productos en mostrador, sin trabajo asociado.</p>
+    </a>
+
     <a class="dashboard-module-card" href="${pageContext.request.contextPath}/proveedores" style="text-decoration:none; color:inherit;">
         <div class="dashboard-module-card__icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>

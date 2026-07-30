@@ -15,9 +15,15 @@ public interface ProductoDAO {
 
     void cambiarEstado(Connection connection, Long idProducto, boolean activo) throws SQLException;
 
+    void ajustarStock(Connection connection, Long idProducto, int delta) throws SQLException;
+
     Optional<Producto> buscarPorId(Long idProducto) throws SQLException;
 
+    Optional<Producto> buscarPorId(Connection connection, Long idProducto) throws SQLException;
+
     boolean tieneItemsDeTrabajoAsociados(Long idProducto) throws SQLException;
+
+    boolean tieneItemsDeVentaAsociados(Long idProducto) throws SQLException;
 
     PaginaResultado<Producto> listar(String textoBusqueda, String estadoFiltro, Long proveedorId,
                                       int pagina, int registrosPorPagina) throws SQLException;

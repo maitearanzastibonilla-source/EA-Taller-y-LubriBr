@@ -12,8 +12,8 @@ Un modulo a la vez, con autorizacion explicita antes de iniciar el siguiente (pr
 - [x] Comprobantes
 - [x] Proveedores
 - [x] Productos
-- [ ] Ventas Directas
-- [ ] Items de Venta
+- [x] Ventas Directas
+- [x] Items de Venta
 - [ ] Compras
 - [ ] Items de Compra
 - [ ] Reportes
@@ -22,17 +22,18 @@ Un modulo a la vez, con autorizacion explicita antes de iniciar el siguiente (pr
 
 ## Ultimo modulo finalizado
 
-**Modulo:** Productos
+**Modulo:** Ventas Directas e Items de Venta
 **Estado:** Terminado y verificado end-to-end (Tomcat 10 + MySQL 8 reales)
-**Archivos nuevos:** `entity/Producto.java`, `dto/ProductoDTO.java`, `dto/ProductoFormDTO.java`, `dao/ProductoDAO(.impl)`, `service/ProductoService(.impl)`, `validator/ProductoValidator.java`, `exception/ProductoNoEncontradoException.java`, `controller/ProductoServlet.java`, `utils/ProductoMapper.java`, `WEB-INF/jsp/productos/{listado,form}.jsp`, `docs/modulos/09-productos.md`
-**Archivos modificados:** `db/schema.sql` (tabla `productos` + FK `fk_items_trabajo_producto` sobre `items_trabajo`, que quedaba pendiente desde el modulo de Items de Trabajo), `AppConstants.java`, `layout/header.jsp`, `dashboard/dashboard.jsp`, `validations.js`
-**Decision de modelado:** `categoria` como texto libre (la Propuesta da ejemplos abiertos, no una lista cerrada); `stock_actual` solo se carga en el alta y no se edita desde el formulario de modificacion (la Propuesta no lo incluye ahi); baja logica bloqueada si el producto esta referenciado en `items_trabajo`, verificado con una consulta real.
-**Tablas nuevas:** `productos`
-**Dependencias:** Proveedores; es dependencia de Ventas Directas/Items de Venta y Compras/Items de Compra
+**Archivos nuevos:** `entity/VentaDirecta.java`, `entity/EstadoVenta.java`, `entity/ItemVenta.java`, `dto/VentaDTO.java`, `dto/VentaFormDTO.java`, `dto/ItemVentaDTO.java`, `dto/ItemVentaFormDTO.java`, `dao/VentaDAO(.impl)`, `dao/ItemVentaDAO(.impl)`, `service/VentaService(.impl)`, `service/ItemVentaService(.impl)`, `validator/VentaValidator.java`, `validator/ItemVentaValidator.java`, `exception/VentaNoEncontradaException.java`, `exception/ItemVentaNoEncontradoException.java`, `controller/VentaServlet.java`, `controller/ItemVentaServlet.java`, `utils/VentaMapper.java`, `utils/ItemVentaMapper.java`, `WEB-INF/jsp/ventas/{listado,form,detalle}.jsp`, `docs/modulos/10-ventas-directas.md`
+**Archivos modificados:** `db/schema.sql` (tablas `ventas_directas` e `items_venta`), `AppConstants.java`, `ProductoDAO(.impl)` (ajustarStock, tieneItemsDeVentaAsociados), `ProductoServiceImpl` (bloquea baja si el producto esta en una venta), `layout/header.jsp`, `dashboard/dashboard.jsp`, `validations.js`
+**Decision de modelado:** flujo en dos pasos (alta de venta pendiente + carga de items, luego confirmacion) igual que Trabajos/Items de Trabajo; `estado` agregado a `ventas_directas` pese a no estar en la lista de campos de la Propuesta, porque el texto exige diferenciar pendiente/confirmada/anulada; stock validado al cargar cada item y revalidado/descontado recien al confirmar; anulacion restringida a administrador, mismo criterio que Comprobantes y la baja/reapertura de Trabajos.
+**Tablas nuevas:** `ventas_directas`, `items_venta`
+**Dependencias:** Productos, Usuarios
 **Resultado:** OK
 
 ## Modulos anteriores
 
+- **Productos** — catalogo con proveedor obligatorio, alerta de stock bajo. Ver `docs/modulos/09-productos.md`.
 - **Proveedores** — CRUD sin restriccion de rol, adelantado en el orden. Ver `docs/modulos/08-proveedores.md`.
 - **Comprobantes** — generacion de PDF real, alta/anulacion, cierre del ciclo de facturacion. Ver `docs/modulos/07-comprobantes.md`.
 - **Items de Trabajo** — detalle de repuestos y mano de obra por trabajo. Ver `docs/modulos/06-items-trabajo.md`.
@@ -42,4 +43,4 @@ Un modulo a la vez, con autorizacion explicita antes de iniciar el siguiente (pr
 - **Clientes** — alta/baja/consulta de clientes, DNI y telefono unicos. Ver `docs/modulos/02-clientes.md`.
 - **Usuarios** — login, roles, auditoria, bloqueo de cuenta. Ver `docs/modulos/01-usuarios.md`.
 
-Siguiente paso: esperar autorizacion del cliente para iniciar el Modulo de Ventas Directas (junto con Items de Venta, con descuento y restauracion real de stock contra `productos`).
+Siguiente paso: esperar autorizacion del cliente para iniciar el Modulo de Compras (junto con Items de Compra).
