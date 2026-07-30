@@ -40,13 +40,13 @@
         <p>Patente, marca, modelo y propietario.</p>
     </a>
 
-    <div class="dashboard-module-card dashboard-module-card--disabled">
+    <a class="dashboard-module-card" href="${pageContext.request.contextPath}/turnos" style="text-decoration:none; color:inherit;">
         <div class="dashboard-module-card__icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>
         </div>
         <h3>Turnos</h3>
-        <p>Proximamente.</p>
-    </div>
+        <p>Agenda de servicios del taller.</p>
+    </a>
 </div>
 
 <%@ include file="/WEB-INF/jsp/layout/footer.jsp" %>

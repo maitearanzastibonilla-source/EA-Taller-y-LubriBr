@@ -9,5 +9,6 @@
 <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/validations.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/usuarios.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/turnos.js"></script>
 </body>
 </html>

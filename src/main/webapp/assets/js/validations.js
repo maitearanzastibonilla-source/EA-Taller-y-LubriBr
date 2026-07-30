@@ -226,10 +226,38 @@
         });
     }
 
+    function inicializarFormularioTurno() {
+        var form = document.querySelector("[data-form='turno']");
+        if (!form) {
+            return;
+        }
+        var clienteId = form.querySelector("[name='clienteId']");
+        var vehiculoId = form.querySelector("[name='vehiculoId']");
+        var fechaHora = form.querySelector("[name='fechaHora']");
+        var tipoServicio = form.querySelector("[name='tipoServicio']");
+
+        form.addEventListener("submit", function (event) {
+            var valido = true;
+            if (clienteId && clienteId.tagName === "SELECT") {
+                valido = validarCampoRequerido(clienteId, "Debe seleccionar un cliente.") && valido;
+            }
+            if (vehiculoId && vehiculoId.tagName === "SELECT") {
+                valido = validarCampoRequerido(vehiculoId, "Debe seleccionar un vehiculo.") && valido;
+            }
+            valido = validarCampoRequerido(fechaHora, "La fecha y hora son obligatorias.") && valido;
+            valido = validarCampoRequerido(tipoServicio, "Debe seleccionar el tipo de servicio.") && valido;
+
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         inicializarFormularioLogin();
         inicializarFormularioUsuario();
         inicializarFormularioCliente();
         inicializarFormularioVehiculo();
+        inicializarFormularioTurno();
     });
 })();

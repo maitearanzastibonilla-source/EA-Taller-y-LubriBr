@@ -124,3 +124,38 @@ CREATE INDEX idx_vehiculos_estado ON vehiculos (estado);
 -- Nota: "no se puede dar de baja un vehiculo con turnos activos o trabajos
 -- pendientes" se activa cuando existan esas tablas (Turnos, Trabajos
 -- Realizados).
+
+-- -------------------------------------------------------------
+-- Tabla: turnos
+-- Objetivo: agenda de turnos del taller (Modulo de Turnos).
+--
+-- La capacidad simultanea del taller (cuantos turnos puede haber en el
+-- mismo horario) no esta cuantificada en la Propuesta Tecnica; se fijo en
+-- AppConstants.CAPACIDAD_TALLER_SIMULTANEA (2) como valor de referencia,
+-- ajustable sin tocar el modelo de datos.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS turnos (
+    id_turno       BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    cliente_id     BIGINT UNSIGNED NOT NULL,
+    vehiculo_id    BIGINT UNSIGNED NOT NULL,
+    usuario_id     BIGINT UNSIGNED NOT NULL,
+    fecha_hora     DATETIME     NOT NULL,
+    tipo_servicio  ENUM('MECANICA', 'LUBRICENTRO', 'OTRO') NOT NULL,
+    estado         ENUM('PENDIENTE', 'CONFIRMADO', 'EN_PROCESO', 'FINALIZADO', 'CANCELADO') NOT NULL DEFAULT 'PENDIENTE',
+    notas          VARCHAR(500) NULL,
+    created_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_turnos_cliente FOREIGN KEY (cliente_id)
+        REFERENCES clientes (id_cliente) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_turnos_vehiculo FOREIGN KEY (vehiculo_id)
+        REFERENCES vehiculos (id_vehiculo) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_turnos_usuario FOREIGN KEY (usuario_id)
+        REFERENCES usuarios (id_usuario) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_turnos_fecha_hora ON turnos (fecha_hora);
+CREATE INDEX idx_turnos_cliente ON turnos (cliente_id);
+CREATE INDEX idx_turnos_vehiculo ON turnos (vehiculo_id);
+CREATE INDEX idx_turnos_estado ON turnos (estado);
+CREATE INDEX idx_turnos_tipo_servicio ON turnos (tipo_servicio);

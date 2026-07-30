@@ -52,6 +52,13 @@
                 </span>
                 <span class="sidebar__link-text">Vehiculos</span>
             </a>
+            <a class="sidebar__link ${activeMenu == 'turnos' ? 'is-active' : ''}"
+               href="${pageContext.request.contextPath}/turnos">
+                <span class="sidebar__link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>
+                </span>
+                <span class="sidebar__link-text">Turnos</span>
+            </a>
 
             <c:if test="${sessionScope.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}">
                 <span class="sidebar__section-label">Administracion</span>
