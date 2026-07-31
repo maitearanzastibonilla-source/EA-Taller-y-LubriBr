@@ -453,6 +453,31 @@
         });
     }
 
+    function inicializarFormularioReporte() {
+        var form = document.querySelector("[data-form='reporte']");
+        if (!form) {
+            return;
+        }
+        var tipoReporte = form.querySelector("[name='tipoReporte']");
+        var fechaDesde = form.querySelector("[name='fechaDesde']");
+        var fechaHasta = form.querySelector("[name='fechaHasta']");
+
+        form.addEventListener("submit", function (event) {
+            var valido = true;
+            valido = validarCampoRequerido(tipoReporte, "Debe seleccionar un tipo de reporte.") && valido;
+            valido = validarCampoRequerido(fechaDesde, "La fecha desde es obligatoria.") && valido;
+            valido = validarCampoRequerido(fechaHasta, "La fecha hasta es obligatoria.") && valido;
+            if (fechaDesde.value && fechaHasta.value && fechaDesde.value > fechaHasta.value) {
+                marcarError(fechaHasta, "La fecha hasta debe ser posterior o igual a la fecha desde.");
+                valido = false;
+            }
+
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         inicializarFormularioLogin();
         inicializarFormularioUsuario();
@@ -468,5 +493,6 @@
         inicializarFormularioItemVenta();
         inicializarFormularioCompra();
         inicializarFormularioItemCompra();
+        inicializarFormularioReporte();
     });
 })();

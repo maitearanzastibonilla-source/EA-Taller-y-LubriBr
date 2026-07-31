@@ -39,7 +39,7 @@ public class AuthenticationFilter implements Filter {
     );
 
     private static final Set<String> PREFIJOS_SOLO_ADMINISTRADOR = Set.of(
-            "/usuarios"
+            "/usuarios", "/reportes"
     );
 
     @Override

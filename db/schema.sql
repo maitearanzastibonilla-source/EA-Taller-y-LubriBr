@@ -443,3 +443,31 @@ CREATE INDEX idx_items_compra_producto ON items_compra (producto_id);
 -- compras" ya se implementa contra items_trabajo, items_venta e
 -- items_compra: las tres tablas existentes que pueden referenciar un
 -- producto.
+
+-- -------------------------------------------------------------
+-- Tabla: reportes
+-- Objetivo: registro de reportes generados por un administrador (Modulo de
+-- Reportes). generarReporte()/exportarPDF() de la Propuesta son
+-- comportamiento (ver ReporteServiceImpl/ReportePdfGenerator), no columnas.
+-- fecha_desde/fecha_hasta se agregaron ademas de lo listado en la
+-- Propuesta para poder volver a mostrar el periodo consultado al reabrir
+-- un reporte ya generado.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS reportes (
+    id_reporte           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    tipo_reporte         ENUM('TRABAJOS_POR_PERIODO', 'INGRESOS', 'MOVIMIENTOS_STOCK',
+                               'COMPRAS_POR_PROVEEDOR', 'TURNOS_POR_ESTADO', 'RANKING_CLIENTES') NOT NULL,
+    fecha_generacion     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    usuario_generador_id BIGINT UNSIGNED NOT NULL,
+    formato              VARCHAR(10) NOT NULL DEFAULT 'PDF',
+    fecha_desde          DATE NOT NULL,
+    fecha_hasta          DATE NOT NULL,
+    pdf_url              VARCHAR(300) NOT NULL DEFAULT '',
+
+    CONSTRAINT fk_reportes_usuario FOREIGN KEY (usuario_generador_id)
+        REFERENCES usuarios (id_usuario) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_reportes_tipo ON reportes (tipo_reporte);
+CREATE INDEX idx_reportes_usuario ON reportes (usuario_generador_id);
+CREATE INDEX idx_reportes_fecha_generacion ON reportes (fecha_generacion);

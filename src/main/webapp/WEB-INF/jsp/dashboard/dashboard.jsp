@@ -22,6 +22,13 @@
             <h3>Usuarios</h3>
             <p>Administracion de accesos, roles y permisos del sistema.</p>
         </a>
+        <a class="dashboard-module-card" href="${pageContext.request.contextPath}/reportes" style="text-decoration:none; color:inherit;">
+            <div class="dashboard-module-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+            </div>
+            <h3>Reportes</h3>
+            <p>Informes consolidados del negocio, exportables a PDF.</p>
+        </a>
     </c:if>
 
     <a class="dashboard-module-card" href="${pageContext.request.contextPath}/clientes" style="text-decoration:none; color:inherit;">

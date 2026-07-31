@@ -111,6 +111,13 @@
                     </span>
                     <span class="sidebar__link-text">Usuarios</span>
                 </a>
+                <a class="sidebar__link ${activeMenu == 'reportes' ? 'is-active' : ''}"
+                   href="${pageContext.request.contextPath}/reportes">
+                    <span class="sidebar__link-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+                    </span>
+                    <span class="sidebar__link-text">Reportes</span>
+                </a>
             </c:if>
         </nav>
         <button type="button" class="sidebar__toggle" data-sidebar-toggle aria-label="Colapsar menu">
