@@ -94,6 +94,13 @@
                 </span>
                 <span class="sidebar__link-text">Productos</span>
             </a>
+            <a class="sidebar__link ${activeMenu == 'compras' ? 'is-active' : ''}"
+               href="${pageContext.request.contextPath}/compras">
+                <span class="sidebar__link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V6a4 4 0 00-8 0v1H6a1 1 0 00-1 1v11a2 2 0 002 2h10a2 2 0 002-2V8a1 1 0 00-1-1z"/><path d="M9 7V6a3 3 0 016 0v1"/></svg>
+                </span>
+                <span class="sidebar__link-text">Compras</span>
+            </a>
 
             <c:if test="${sessionScope.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}">
                 <span class="sidebar__section-label">Administracion</span>

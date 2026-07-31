@@ -414,6 +414,45 @@
         });
     }
 
+    function inicializarFormularioCompra() {
+        var form = document.querySelector("[data-form='compra']");
+        if (!form) {
+            return;
+        }
+        var proveedorId = form.querySelector("[name='proveedorId']");
+
+        form.addEventListener("submit", function (event) {
+            if (!validarCampoRequerido(proveedorId, "Debe seleccionar un proveedor.")) {
+                event.preventDefault();
+            }
+        });
+    }
+
+    function inicializarFormularioItemCompra() {
+        var form = document.querySelector("[data-form='item-compra']");
+        if (!form) {
+            return;
+        }
+        var productoId = form.querySelector("[name='productoId']");
+        var cantidad = form.querySelector("[name='cantidad']");
+        var precioUnitario = form.querySelector("[name='precioUnitario']");
+
+        form.addEventListener("submit", function (event) {
+            var valido = true;
+            valido = validarCampoRequerido(productoId, "Debe seleccionar un producto.") && valido;
+            valido = validarCampoRequerido(cantidad, "La cantidad es obligatoria.") && valido;
+            if (cantidad.value && parseInt(cantidad.value, 10) <= 0) {
+                marcarError(cantidad, "La cantidad debe ser mayor a cero.");
+                valido = false;
+            }
+            valido = validarCampoRequerido(precioUnitario, "El precio unitario es obligatorio.") && valido;
+
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         inicializarFormularioLogin();
         inicializarFormularioUsuario();
@@ -427,5 +466,7 @@
         inicializarFormularioProducto();
         inicializarFormularioVenta();
         inicializarFormularioItemVenta();
+        inicializarFormularioCompra();
+        inicializarFormularioItemCompra();
     });
 })();

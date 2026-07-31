@@ -87,6 +87,14 @@
         <h3>Productos</h3>
         <p>Catalogo de repuestos e insumos, precios y stock.</p>
     </a>
+
+    <a class="dashboard-module-card" href="${pageContext.request.contextPath}/compras" style="text-decoration:none; color:inherit;">
+        <div class="dashboard-module-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V6a4 4 0 00-8 0v1H6a1 1 0 00-1 1v11a2 2 0 002 2h10a2 2 0 002-2V8a1 1 0 00-1-1z"/><path d="M9 7V6a3 3 0 016 0v1"/></svg>
+        </div>
+        <h3>Compras</h3>
+        <p>Ordenes de compra a proveedores para reponer stock.</p>
+    </a>
 </div>
 
 <%@ include file="/WEB-INF/jsp/layout/footer.jsp" %>

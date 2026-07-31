@@ -25,6 +25,8 @@ public interface ProductoDAO {
 
     boolean tieneItemsDeVentaAsociados(Long idProducto) throws SQLException;
 
+    boolean tieneItemsDeCompraAsociados(Long idProducto) throws SQLException;
+
     PaginaResultado<Producto> listar(String textoBusqueda, String estadoFiltro, Long proveedorId,
                                       int pagina, int registrosPorPagina) throws SQLException;
 }

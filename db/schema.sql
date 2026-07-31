@@ -386,7 +386,60 @@ CREATE TABLE IF NOT EXISTS items_venta (
 CREATE INDEX idx_items_venta_venta ON items_venta (venta_id);
 CREATE INDEX idx_items_venta_producto ON items_venta (producto_id);
 
+-- -------------------------------------------------------------
+-- Tabla: compras
+-- Objetivo: ordenes de compra a proveedores para reponer stock (Modulo de
+-- Compras). A diferencia de ventas_directas, aqui `estado` si esta en el
+-- listado de campos de la Propuesta.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS compras (
+    id_compra    BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    proveedor_id BIGINT UNSIGNED NOT NULL,
+    usuario_id   BIGINT UNSIGNED NOT NULL,
+    fecha        DATE NOT NULL,
+    total        DECIMAL(12,2) NOT NULL DEFAULT 0,
+    estado       ENUM('PENDIENTE', 'CONFIRMADA', 'ANULADA') NOT NULL DEFAULT 'PENDIENTE',
+    created_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_compras_proveedor FOREIGN KEY (proveedor_id)
+        REFERENCES proveedores (id_proveedor) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_compras_usuario FOREIGN KEY (usuario_id)
+        REFERENCES usuarios (id_usuario) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT ck_compras_total CHECK (total >= 0)
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_compras_proveedor ON compras (proveedor_id);
+CREATE INDEX idx_compras_usuario ON compras (usuario_id);
+CREATE INDEX idx_compras_estado ON compras (estado);
+CREATE INDEX idx_compras_fecha ON compras (fecha);
+
+-- -------------------------------------------------------------
+-- Tabla: items_compra
+-- Objetivo: detalle de productos adquiridos en cada compra (Modulo de
+-- Items de Compra). Igual que items_venta, producto_id es obligatorio.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS items_compra (
+    id_item_compra  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    compra_id       BIGINT UNSIGNED NOT NULL,
+    producto_id     BIGINT UNSIGNED NOT NULL,
+    cantidad        INT NOT NULL,
+    precio_unitario DECIMAL(12,2) NOT NULL,
+    created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_items_compra_compra FOREIGN KEY (compra_id)
+        REFERENCES compras (id_compra) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_items_compra_producto FOREIGN KEY (producto_id)
+        REFERENCES productos (id_producto) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT ck_items_compra_cantidad CHECK (cantidad > 0),
+    CONSTRAINT ck_items_compra_precio CHECK (precio_unitario >= 0)
+) ENGINE = InnoDB;
+
+CREATE INDEX idx_items_compra_compra ON items_compra (compra_id);
+CREATE INDEX idx_items_compra_producto ON items_compra (producto_id);
+
 -- Nota: "no se puede eliminar un producto usado en ventas, trabajos o
--- compras" ya se implementa contra items_trabajo e items_venta (las dos
--- tablas que existen); se completara contra items_compra cuando ese modulo
--- exista.
+-- compras" ya se implementa contra items_trabajo, items_venta e
+-- items_compra: las tres tablas existentes que pueden referenciar un
+-- producto.

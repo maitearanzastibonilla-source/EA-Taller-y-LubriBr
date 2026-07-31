@@ -42,6 +42,9 @@ public class ProductoDAOImpl implements ProductoDAO {
     private static final String SQL_TIENE_ITEMS_VENTA =
             "SELECT COUNT(*) FROM items_venta WHERE producto_id = ?";
 
+    private static final String SQL_TIENE_ITEMS_COMPRA =
+            "SELECT COUNT(*) FROM items_compra WHERE producto_id = ?";
+
     @Override
     public Producto crear(Connection connection, Producto producto) throws SQLException {
         try (PreparedStatement stmt = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
@@ -127,6 +130,19 @@ public class ProductoDAOImpl implements ProductoDAO {
     public boolean tieneItemsDeVentaAsociados(Long idProducto) throws SQLException {
         try (Connection connection = DBConnectionManager.getConnection();
              PreparedStatement stmt = connection.prepareStatement(SQL_TIENE_ITEMS_VENTA)) {
+
+            stmt.setLong(1, idProducto);
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+
+    @Override
+    public boolean tieneItemsDeCompraAsociados(Long idProducto) throws SQLException {
+        try (Connection connection = DBConnectionManager.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(SQL_TIENE_ITEMS_COMPRA)) {
 
             stmt.setLong(1, idProducto);
             try (ResultSet rs = stmt.executeQuery()) {
